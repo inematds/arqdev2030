@@ -1,0 +1,1291 @@
+<!DOCTYPE html><html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T5 - DevOps e Operacoes — Arquitetura 2030</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FACC15',
+                        dark: {
+                            900: '#111827',
+                            800: '#1f2937',
+                            700: '#374151',
+                            600: '#4b5563'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Light mode base overrides */
+        html:not(.dark) body { background-color: #f8fafc; }
+        html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+        html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+        html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+        html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+        html:not(.dark) .text-neutral-100 { color: #111827; }
+        html:not(.dark) .text-neutral-300 { color: #4b5563; }
+        html:not(.dark) .text-neutral-400 { color: #6b7280; }
+        html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+        html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+        html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+        /* Teal accent colors */
+        html:not(.dark) .text-teal-400 { color: #0d9488; }
+        html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13, 148, 136, 0.12); }
+        html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13, 148, 136, 0.08); }
+        html:not(.dark) .border-teal-500\/30 { border-color: rgba(13, 148, 136, 0.25); }
+        html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13, 148, 136, 0.18); }
+        html:not(.dark) .bg-teal-900\/30 { background-color: rgba(13, 148, 136, 0.06); }
+        html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
+        html:not(.dark) .hover\:bg-teal-500\/10:hover { background-color: rgba(13, 148, 136, 0.08); }
+        html:not(.dark) .group:hover .group-hover\:text-teal-400 { color: #0d9488; }
+
+        /* Other trilha colors for nav */
+        html:not(.dark) .text-emerald-400 { color: #059669; }
+        html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+        html:not(.dark) .text-blue-400 { color: #2563eb; }
+        html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+        html:not(.dark) .text-purple-400 { color: #7c3aed; }
+        html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+        html:not(.dark) .text-amber-400 { color: #92400e; }
+        html:not(.dark) .hover\:bg-amber-500\/10:hover { background-color: rgba(217, 119, 6, 0.08); }
+        html:not(.dark) .text-rose-400 { color: #9f1239; }
+        html:not(.dark) .hover\:bg-rose-500\/10:hover { background-color: rgba(225, 29, 72, 0.08); }
+
+        /* Gradients and specials */
+        html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+        html:not(.dark) .text-primary { color: #a16207; }
+        html:not(.dark) .text-sky-400 { color: #0369a1; }
+        html:not(.dark) .text-yellow-400 { color: #a16207; }
+        html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+        html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+        html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+        html:not(.dark) .bg-teal-600 { background-color: #0d9488; }
+        html:not(.dark) .hover\:bg-teal-500:hover { background-color: #0f766e; }
+    </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen font-sans">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <a href="../../index.html" class="text-yellow-400 font-bold text-lg hover:text-yellow-300 transition-colors">🏗️ Arquitetura 2030</a>
+                    <span class="text-neutral-500">|</span>
+                    <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors">INEMA.CLUB</a>
+                </div>
+                <div class="flex items-center gap-1">
+                    <a href="../trilha1/index.html" class="px-2 py-1 text-xs font-medium text-emerald-400 hover:bg-emerald-500/10 rounded transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+                    <a href="../trilha2/index.html" class="px-2 py-1 text-xs font-medium text-blue-400 hover:bg-blue-500/10 rounded transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Decisao</span></a>
+                    <a href="../trilha3/index.html" class="px-2 py-1 text-xs font-medium text-purple-400 hover:bg-purple-500/10 rounded transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">IA</span></a>
+                    <a href="../trilha4/index.html" class="px-2 py-1 text-xs font-medium text-amber-400 hover:bg-amber-500/10 rounded transition-colors"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Pratica</span></a>
+                    <a href="index.html" class="px-2 py-1 text-xs font-medium text-teal-400 bg-teal-500/20 rounded transition-colors"><span class="sm:hidden">T5</span><span class="hidden sm:inline">DevOps</span></a>
+                    <a href="../trilha6/index.html" class="px-2 py-1 text-xs font-medium text-rose-400 hover:bg-rose-500/10 rounded transition-colors"><span class="sm:hidden">T6</span><span class="hidden sm:inline">Escalando</span></a>
+                    <button id="theme-toggle" class="ml-3 p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors">
+                        <svg id="theme-toggle-dark-icon" class="w-4 h-4 text-neutral-400 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="w-4 h-4 text-neutral-400 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-teal-900/30 via-dark-900 to-dark-900"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+            <div class="text-center">
+                <span class="inline-block bg-teal-500/20 text-teal-400 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border border-teal-500/30 mb-6">Trilha 5</span>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-neutral-100 mb-6">🚀 DevOps e Operacoes</h1>
+                <p class="text-lg text-neutral-300 max-w-2xl mx-auto mb-10">Do commit ao deploy em minutos — CI/CD, infraestrutura como codigo, monitoramento, seguranca e resposta a incidentes</p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                    <div class="bg-dark-800 border border-teal-500/30 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-teal-400">5</div>
+                        <div class="text-sm text-neutral-400">Modulos</div>
+                    </div>
+                    <div class="bg-dark-800 border border-teal-500/30 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-teal-400">35</div>
+                        <div class="text-sm text-neutral-400">Topicos</div>
+                    </div>
+                    <div class="bg-dark-800 border border-teal-500/30 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-teal-400">~3h</div>
+                        <div class="text-sm text-neutral-400">de conteudo</div>
+                    </div>
+                    <div class="bg-dark-800 border border-teal-500/30 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-teal-400">Avanc.</div>
+                        <div class="text-sm text-neutral-400">Avancado</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-8">
+
+        <!-- M5.1 -->
+        <div class="bg-dark-800 border border-teal-500/30 rounded-2xl overflow-hidden">
+            <button onclick="toggleModule('m51')" class="w-full flex items-center justify-start gap-4 p-6 hover:bg-teal-500/10 transition-colors">
+                <div class="w-12 h-12 bg-teal-500/20 rounded-xl flex items-center justify-center text-2xl shrink-0">🚢</div>
+                <div class="text-left flex-1">
+                    <div class="text-xs font-semibold text-teal-400 uppercase tracking-wider">Modulo 5.1 — ~35 min</div>
+                    <h3 class="text-lg font-bold text-neutral-100">CI/CD e Deploy Automatizado</h3>
+                    <p class="text-sm text-neutral-400 mt-1">Do commit ao deploy em minutos, nao dias</p>
+                </div>
+                <div id="m51-icon" class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0 transition-transform">7</div>
+            </button>
+            <div id="m51" class="hidden border-t border-teal-500/30">
+                <!-- Topic 1 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m51t1')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">1</div>
+                        <span class="text-left text-neutral-100 font-medium">🔄 O que e CI/CD — "Integracao continua e entrega continua explicadas"</span>
+                    </button>
+                    <div id="m51t1" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">CI: cada commit e buildado e testado automaticamente. CD: codigo que passa nos testes vai para producao automaticamente (ou com um clique).</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Sem CI/CD, deploy e manual, arriscado e infrequente. Ex: O Amazon deploya a cada 11.7 segundos. O Etsy faz 50+ deploys/dia. So e possivel porque cada deploy e testado, automatizado e reversivel.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Continuous Integration</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Continuous Delivery vs. Deployment</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Build-test-deploy pipeline</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Trunk-based development</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 2 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m51t2')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">2</div>
+                        <span class="text-left text-neutral-100 font-medium">🏗️ GitHub Actions na Pratica — "CI/CD gratuito para projetos open-source e privados"</span>
+                    </button>
+                    <div id="m51t2" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Plataforma de CI/CD do GitHub: workflows definidos em YAML, triggers por push/PR/schedule, runners Linux/macOS/Windows, marketplace de actions.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Integrado ao GitHub onde o codigo ja vive. Free para repos publicos, generoso para privados. Ex: Workflow: push → lint (ESLint) → test (Jest) → build → deploy (Vercel). 5 minutos para configurar, roda para sempre.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Workflow YAML</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Triggers (push, pull_request, schedule)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Jobs e steps</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Secrets</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Caching</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Matrix builds</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 3 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m51t3')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">3</div>
+                        <span class="text-left text-neutral-100 font-medium">🐳 Docker — "Funciona na minha maquina? Agora funciona em qualquer lugar"</span>
+                    </button>
+                    <div id="m51t3" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Containers que empacotam aplicacao + dependencias em uma imagem reproducivel. Mesmo ambiente em dev, CI e producao.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">"Funciona na minha maquina" mata produtividade. Ex: Sem Docker: "instala Python 3.11, pip install requirements.txt, configura PostgreSQL 15, Redis 7...". Com Docker: `docker compose up`. Pronto em 30 segundos, identico para todos.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Dockerfile</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Docker Compose</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Images vs. containers</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Multi-stage builds</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Volume mounts</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Docker Hub</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 4 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m51t4')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">4</div>
+                        <span class="text-left text-neutral-100 font-medium">📦 Deploy Strategies — "Blue-green, canary, rolling — como fazer deploy sem downtime"</span>
+                    </button>
+                    <div id="m51t4" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Estrategias para atualizar producao sem interrupcao: blue-green (dois ambientes), canary (percentual gradual), rolling (instancia por instancia).</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Deploy sem estrategia = downtime. Ex: O Netflix usa canary deployment para cada mudanca — 1% dos servidores recebem a nova versao. Se error rate sobe, auto-rollback em &lt;2 minutos. Os outros 99% nunca sao afetados.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Blue-green deployment</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Canary releases</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Rolling updates</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Feature flags</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Rollback procedures</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Zero-downtime deployment</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 5 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m51t5')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">5</div>
+                        <span class="text-left text-neutral-100 font-medium">🌍 Ambientes — "Dev, staging, production — por que e como"</span>
+                    </button>
+                    <div id="m51t5" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Ambientes isolados para cada fase: dev (local), staging (replica de prod), production (real). Cada um com sua config, dados e infra.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Testar em producao e negligencia. Testar sem staging e risco. Ex: O Knight Capital perdeu US$440M em 45 minutos porque deployaram codigo de teste em producao sem staging. O codigo de teste comprou acoes aleatoriamente. Irreversivel.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Environment parity</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">.env management</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Feature parity dev/staging/prod</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Database seeding</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Staging as prod mirror</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 6 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m51t6')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">6</div>
+                        <span class="text-left text-neutral-100 font-medium">🔙 Rollback — "Desfazer deploy em 30 segundos"</span>
+                    </button>
+                    <div id="m51t6" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Capacidade de reverter rapidamente para a versao anterior. Pode ser: redeploy da versao antiga, feature flag off, ou database rollback.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Se deploy sempre da certo, voce nao precisa de rollback. Na realidade, 10-15% dos deploys tem problemas. Ex: O GitLab tem rollback automatico: se health checks falham apos deploy, reverte para a versao anterior em &lt;1 minuto. Sem intervencao humana.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Immutable deployments</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Version tagging</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Database rollback</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Feature flag as rollback</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Health check validation</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">MTTR (Mean Time To Recovery)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 7 -->
+                <div>
+                    <button onclick="toggleTopic('m51t7')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">7</div>
+                        <span class="text-left text-neutral-100 font-medium">📊 Deploy Metrics — "DORA metrics: frequencia, lead time, failure rate, MTTR"</span>
+                    </button>
+                    <div id="m51t7" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">4 metricas DORA: deployment frequency, lead time for changes, change failure rate, mean time to recovery. Medem a saude do processo de entrega.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Medir e o primeiro passo para melhorar. Ex: Times "elite" (Google, Amazon, Netflix): deploy multiplas vezes/dia, lead time &lt;1h, failure rate &lt;15%, MTTR &lt;1h. Times "low performers": deploy mensal, lead time &gt;6 meses, failure rate &gt;46%, MTTR &gt;1 semana.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">DORA metrics</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Accelerate (livro)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Elite vs. low performers</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Measurement tools</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Improvement strategies</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- M5.2 -->
+        <div class="bg-dark-800 border border-teal-500/30 rounded-2xl overflow-hidden">
+            <button onclick="toggleModule('m52')" class="w-full flex items-center justify-start gap-4 p-6 hover:bg-teal-500/10 transition-colors">
+                <div class="w-12 h-12 bg-teal-500/20 rounded-xl flex items-center justify-center text-2xl shrink-0">🏗️</div>
+                <div class="text-left flex-1">
+                    <div class="text-xs font-semibold text-teal-400 uppercase tracking-wider">Modulo 5.2 — ~35 min</div>
+                    <h3 class="text-lg font-bold text-neutral-100">Infraestrutura como Codigo</h3>
+                    <p class="text-sm text-neutral-400 mt-1">Servidores como codigo: versionados, testaveis, reproduziveis</p>
+                </div>
+                <div id="m52-icon" class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0 transition-transform">7</div>
+            </button>
+            <div id="m52" class="hidden border-t border-teal-500/30">
+                <!-- Topic 1 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m52t1')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">1</div>
+                        <span class="text-left text-neutral-100 font-medium">📝 O que e IaC — "Infraestrutura declarativa, nao clicada"</span>
+                    </button>
+                    <div id="m52t1" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Definir infraestrutura em arquivos de codigo (Terraform, Pulumi, CloudFormation). Versionado no git, revisavel em PR, reproduzivel.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Infra clicada no console e irreproducivel e indocumentada. Ex: "Quem criou este security group? Com que regras? Por que?" — com IaC, a resposta esta no git blame. Sem IaC, ninguem sabe.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Declarative vs. imperative</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Terraform</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Pulumi</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">State management</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Plan before apply</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Idempotency</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 2 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m52t2')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">2</div>
+                        <span class="text-left text-neutral-100 font-medium">🌍 Terraform — "O padrao de facto para IaC multi-cloud"</span>
+                    </button>
+                    <div id="m52t2" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Ferramenta HashiCorp que provisiona infra em qualquer cloud (AWS, GCP, Azure, Cloudflare) com linguagem declarativa (HCL).</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Multi-cloud e extensivel. Maior ecossistema de providers. Ex: 20 linhas de Terraform criam: VPC + subnet + security group + EC2 + RDS PostgreSQL + load balancer. Reproduzivel em qualquer conta AWS.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Providers</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Resources</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Modules</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">State file</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">terraform plan/apply</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Workspaces</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Remote state (S3 + DynamoDB)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 3 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m52t3')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">3</div>
+                        <span class="text-left text-neutral-100 font-medium">📦 Docker Compose para Dev — "Ambiente local reproduzivel em 1 comando"</span>
+                    </button>
+                    <div id="m52t3" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">docker-compose.yml define todos os servicos do projeto: app, banco, cache, queue. `docker compose up` inicia tudo.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Elimina "works on my machine" para sempre. Ex: docker-compose.yml: PostgreSQL 15 + Redis 7 + n8n + app Node.js. Novo dev: clone repo → `docker compose up` → trabalhando em 2 minutos. Sem instalar nada.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">docker-compose.yml</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Services</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Networks</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Volumes</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Environment variables</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Health checks</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Profiles</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 4 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m52t4')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">4</div>
+                        <span class="text-left text-neutral-100 font-medium">☸️ Kubernetes — "Quando (e quando NAO) usar"</span>
+                    </button>
+                    <div id="m52t4" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Orquestrador de containers para escala. Gerencia deploys, scaling, self-healing, service discovery. E complexo — so use quando realmente precisa.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Kubernetes e poderoso mas tem overhead enorme. Ex: Uma startup com 3 devs rodando K8s gasta 40% do tempo em infra. A mesma startup com Vercel + Supabase gasta 5%. K8s faz sentido com 50+ servicos e time de platform engineering dedicado.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Pods</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Services</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Deployments</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Ingress</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Helm charts</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">When K8s is overkill</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Managed K8s (EKS, GKE)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Alternatives (Fly.io, Railway)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 5 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m52t5')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">5</div>
+                        <span class="text-left text-neutral-100 font-medium">🔐 Secrets Management — "Credenciais nunca no codigo"</span>
+                    </button>
+                    <div id="m52t5" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Gerenciamento seguro de API keys, senhas, tokens: environment variables, vaults (HashiCorp Vault, AWS Secrets Manager), .env (nunca commitado).</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Credencial no codigo e brecha garantida. Ex: Em 2023, bots no GitHub escaneiam commits em &lt;1 segundo procurando API keys expostas. AWS keys expostas geram instancias de crypto mining em minutos — conta de US$50k overnight.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Environment variables</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">.env + .gitignore</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">HashiCorp Vault</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">AWS Secrets Manager</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">GitHub secrets</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Key rotation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 6 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m52t6')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">6</div>
+                        <span class="text-left text-neutral-100 font-medium">🌐 CDN e Edge — "Conteudo mais perto do usuario"</span>
+                    </button>
+                    <div id="m52t6" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Content Delivery Network distribui conteudo estatico em servers globais. Edge computing processa logica perto do usuario.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">CDN reduz latencia drasticamente — serve de um datacenter a 50ms de distancia em vez de 500ms. Ex: Cloudflare tem 300+ PoPs globais. Seu HTML estatico e servido do PoP mais proximo do usuario. Sao Paulo? Serve de Sao Paulo. Lisboa? Serve de Lisboa.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Cloudflare</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">AWS CloudFront</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Edge functions (Workers, Lambda@Edge)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Cache headers</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Purge strategies</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Static-first</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 7 -->
+                <div>
+                    <button onclick="toggleTopic('m52t7')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">7</div>
+                        <span class="text-left text-neutral-100 font-medium">💸 Otimizacao de Custos — "FinOps: pagar so pelo que usa"</span>
+                    </button>
+                    <div id="m52t7" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Monitoramento e otimizacao de custos de cloud: right-sizing, reserved instances, spot instances, auto-scaling, tag-based cost allocation.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Cloud sem controle gasta 30-40% mais que necessario (Flexera). Ex: AWS Cost Explorer mostra: 60% do custo e em EC2 instances oversized (t3.xlarge rodando app que cabe em t3.small). Right-sizing economiza 50% instantaneamente.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">FinOps framework</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Cost allocation tags</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Reserved vs. on-demand vs. spot</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Right-sizing</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Budget alerts</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Savings plans</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- M5.3 -->
+        <div class="bg-dark-800 border border-teal-500/30 rounded-2xl overflow-hidden">
+            <button onclick="toggleModule('m53')" class="w-full flex items-center justify-start gap-4 p-6 hover:bg-teal-500/10 transition-colors">
+                <div class="w-12 h-12 bg-teal-500/20 rounded-xl flex items-center justify-center text-2xl shrink-0">📊</div>
+                <div class="text-left flex-1">
+                    <div class="text-xs font-semibold text-teal-400 uppercase tracking-wider">Modulo 5.3 — ~35 min</div>
+                    <h3 class="text-lg font-bold text-neutral-100">Monitoramento e Observabilidade</h3>
+                    <p class="text-sm text-neutral-400 mt-1">Logs, metricas e traces — os 3 pilares</p>
+                </div>
+                <div id="m53-icon" class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0 transition-transform">7</div>
+            </button>
+            <div id="m53" class="hidden border-t border-teal-500/30">
+                <!-- Topic 1 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m53t1')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">1</div>
+                        <span class="text-left text-neutral-100 font-medium">📝 Logs Estruturados — "De console.log a observabilidade"</span>
+                    </button>
+                    <div id="m53t1" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Logs em formato JSON com campos padronizados: timestamp, level, service, trace_id, message. Pesquisaveis e filtraveis.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">`console.log("deu erro")` nao ajuda em producao. Ex: Log estruturado: `{"timestamp": "2024-01-15T10:30:00Z", "level": "error", "service": "payments", "trace_id": "abc123", "error": "timeout", "duration_ms": 5000}`. Filtravel, correlacionavel, alertavel.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">JSON logging</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Log levels (debug/info/warn/error)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Correlation IDs</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">ELK Stack (Elasticsearch + Logstash + Kibana)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Loki + Grafana</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 2 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m53t2')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">2</div>
+                        <span class="text-left text-neutral-100 font-medium">📈 Metricas — "Numeros que contam a saude do sistema"</span>
+                    </button>
+                    <div id="m53t2" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Dados numericos ao longo do tempo: request rate, error rate, latency, CPU, memory, queue depth. Prometheus + Grafana e o stack mais popular.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Metricas mostram tendencias que logs nao mostram. Ex: Latencia P99 subindo gradualmente de 100ms para 500ms ao longo de 2 semanas — logs nao mostram isso, metricas sim. Detecta problema antes de virar incidente.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">RED metrics (Rate, Errors, Duration)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">USE metrics (Utilization, Saturation, Errors)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Prometheus</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Grafana</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Counters vs. gauges vs. histograms</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 3 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m53t3')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">3</div>
+                        <span class="text-left text-neutral-100 font-medium">🔍 Distributed Tracing — "Seguindo uma request por 15 servicos"</span>
+                    </button>
+                    <div id="m53t3" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Rastreia uma request do inicio ao fim em sistema distribuido. Cada servico adiciona um span ao trace. Mostra onde o tempo e gasto.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Em microsservicos, "a request esta lenta" nao diz nada. Tracing mostra exatamente qual servico e o gargalo. Ex: O Jaeger mostra: user-service (5ms) → order-service (10ms) → payment-service (2000ms) → notification (5ms). O bottleneck e payments. Sem tracing, levaria horas para descobrir.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">OpenTelemetry</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Jaeger</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Zipkin</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Spans e traces</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Context propagation</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Sampling strategies</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 4 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m53t4')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">4</div>
+                        <span class="text-left text-neutral-100 font-medium">🚨 Alerting — "Ser notificado do problema antes do usuario"</span>
+                    </button>
+                    <div id="m53t4" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Regras que disparam notificacoes quando metricas ultrapassam thresholds: error rate &gt; 5%, latency P99 &gt; 1s, CPU &gt; 80%.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Sem alertas, voce descobre problemas pelo Twitter. Ex: PagerDuty + Grafana: alert rota para o oncall via SMS/call. Escala automaticamente se nao for atendido em 5 minutos. Time medio para saber de um problema: &lt;2 minutos.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Alert rules</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Severity levels</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">On-call rotation</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Escalation policies</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Alert fatigue</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">PagerDuty/OpsGenie</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 5 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m53t5')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">5</div>
+                        <span class="text-left text-neutral-100 font-medium">📊 Dashboards — "Visibilidade operacional em tempo real"</span>
+                    </button>
+                    <div id="m53t5" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Paineis visuais com metricas-chave do sistema. Dashboards por servico, por endpoint, por infra.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Dashboard bom = troubleshooting em minutos. Dashboard ruim = 50 graficos que ninguem olha. Ex: O "golden signals" dashboard: request rate, error rate, latency, saturation. 4 graficos que dizem 90% do que precisa saber. Menos e mais.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Golden signals</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">RED/USE dashboards</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Grafana</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Business metrics dashboards</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">SLO dashboards</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Dashboard as code</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 6 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m53t6')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">6</div>
+                        <span class="text-left text-neutral-100 font-medium">🏥 Health Checks — "Seu sistema sabe se esta saudavel?"</span>
+                    </button>
+                    <div id="m53t6" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Endpoints que reportam saude: /health (live?), /ready (aceitando requests?). Usados por load balancers e orchestrators para routing e restart.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Sem health check, load balancer envia trafego para instancia morta. Ex: Kubernetes liveness probe: se /health retorna 503 3x seguidas, mata o pod e cria novo. Readiness probe: se /ready retorna 503, remove do service (para de receber trafego).</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Liveness vs. readiness probes</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Deep vs. shallow health checks</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Dependency health</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Health check endpoints</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Graceful shutdown</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 7 -->
+                <div>
+                    <button onclick="toggleTopic('m53t7')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">7</div>
+                        <span class="text-left text-neutral-100 font-medium">🔮 SLIs, SLOs e SLAs — "Promessas de disponibilidade com metricas"</span>
+                    </button>
+                    <div id="m53t7" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">SLI (indicator): metrica real (latencia P99 = 150ms). SLO (objective): meta interna (P99 &lt; 200ms). SLA (agreement): compromisso com cliente (99.9% uptime).</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Sem SLOs, "o sistema esta lento" e subjetivo. Com SLOs, e mensuravel. Ex: O Google define SLOs para cada servico interno. Se error budget esta sendo consumido rapido, congelam features e focam em confiabilidade. SLOs guiam priorizacao.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">SLI/SLO/SLA hierarchy</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Error budget</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Burn rate alerts</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">SLO-based prioritization</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Toil budget</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- M5.4 -->
+        <div class="bg-dark-800 border border-teal-500/30 rounded-2xl overflow-hidden">
+            <button onclick="toggleModule('m54')" class="w-full flex items-center justify-start gap-4 p-6 hover:bg-teal-500/10 transition-colors">
+                <div class="w-12 h-12 bg-teal-500/20 rounded-xl flex items-center justify-center text-2xl shrink-0">🔐</div>
+                <div class="text-left flex-1">
+                    <div class="text-xs font-semibold text-teal-400 uppercase tracking-wider">Modulo 5.4 — ~35 min</div>
+                    <h3 class="text-lg font-bold text-neutral-100">Seguranca e Compliance</h3>
+                    <p class="text-sm text-neutral-400 mt-1">Proteger sem paralisar — seguranca pratica</p>
+                </div>
+                <div id="m54-icon" class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0 transition-transform">7</div>
+            </button>
+            <div id="m54" class="hidden border-t border-teal-500/30">
+                <!-- Topic 1 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m54t1')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">1</div>
+                        <span class="text-left text-neutral-100 font-medium">🛡️ OWASP Top 10 — "Os 10 riscos que causam 90% dos breaches"</span>
+                    </button>
+                    <div id="m54t1" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Lista atualizada dos 10 riscos mais criticos em aplicacoes web: injection, broken auth, sensitive data exposure, XSS, etc.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Conhecer os 10 previne a maioria dos ataques. Ex: SQL Injection ainda e o #3 em 2024. Um simples `SELECT * FROM users WHERE id = ${input}` sem sanitizacao expoe todo o banco. Prepared statements resolvem em 1 linha.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Injection</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Broken Authentication</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Sensitive Data Exposure</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">XXE</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Broken Access Control</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Security Misconfiguration</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">XSS</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Insecure Deserialization</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Known Vulnerabilities</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Insufficient Logging</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 2 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m54t2')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">2</div>
+                        <span class="text-left text-neutral-100 font-medium">🔑 Autenticacao Moderna — "Passwords sao legado — passwordless e futuro"</span>
+                    </button>
+                    <div id="m54t2" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Evolucao de auth: passwords → MFA → passwordless (magic links, passkeys, biometrics). OAuth2/OIDC para social login e SSO.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">80% dos breaches envolvem credenciais comprometidas (Verizon DBIR). Ex: Passkeys (WebAuthn) eliminam phishing — a autenticacao e bound ao dominio. Nao funciona em site falso. Apple, Google e Microsoft suportam nativamente.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">OAuth2/OIDC</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">JWT</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Passkeys/WebAuthn</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Magic links</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">MFA</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Social login</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">SSO</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Supabase Auth</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 3 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m54t3')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">3</div>
+                        <span class="text-left text-neutral-100 font-medium">🔒 HTTPS e TLS — "Encriptacao nao e opcional"</span>
+                    </button>
+                    <div id="m54t3" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">TLS encripta comunicacao entre client e server. HTTPS = HTTP + TLS. Let's Encrypt oferece certificados gratuitos. Cloudflare oferece TLS automatico.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">HTTP sem TLS expoe dados em transito. Browsers marcam sites HTTP como "Not Secure". Google penaliza no SEO. Ex: Let's Encrypt automatiza: certbot renova certificados a cada 90 dias. Cloudflare: zero config, TLS automatico para qualquer dominio.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">TLS 1.3</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Let's Encrypt</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Cloudflare SSL</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">HSTS</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Certificate pinning</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">mTLS for service-to-service</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 4 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m54t4')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">4</div>
+                        <span class="text-left text-neutral-100 font-medium">🏰 Zero Trust — "Nunca confie, sempre verifique"</span>
+                    </button>
+                    <div id="m54t4" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Modelo de seguranca onde nada e confiavel por padrao — nem a rede interna. Cada request e autenticada, autorizada e encriptada.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Modelo de "perimetro seguro" (firewall) falha quando o atacante esta dentro. Ex: O breach da SolarWinds (2020) — atacantes dentro da rede por 9 meses porque a rede interna era "trusted". Zero Trust teria exigido autenticacao em cada lateral movement.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Identity-based access</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Micro-segmentation</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Least privilege</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Continuous verification</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">BeyondCorp (Google)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">mTLS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 5 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m54t5')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">5</div>
+                        <span class="text-left text-neutral-100 font-medium">📋 LGPD na Pratica — "O que o desenvolvedor precisa saber"</span>
+                    </button>
+                    <div id="m54t5" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Lei Geral de Protecao de Dados: consentimento, minimizacao de dados, direito de exclusao, portabilidade, notificacao de breach.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Multa de ate 2% do faturamento. Ex: Implementar "right to be forgotten": DELETE de todos os dados do usuario em todas as tabelas, caches, backups, logs e terceiros. Sem arquitetura planejada para isso, e impossivel.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Consentimento</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Minimizacao de dados</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Right to be forgotten</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Data encryption at rest</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Audit trail</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">DPO (Data Protection Officer)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 6 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m54t6')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">6</div>
+                        <span class="text-left text-neutral-100 font-medium">🔍 Dependency Scanning — "Suas dependencias sao seu risco"</span>
+                    </button>
+                    <div id="m54t6" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Scanning automatico de vulnerabilidades em dependencias: Dependabot, Snyk, npm audit. CVEs em libs desatualizadas sao o vetor mais comum de ataque.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Log4Shell (2021) afetou 35k+ pacotes Java. Se voce nao monitora dependencias, nao sabe se esta vulneravel. Ex: Dependabot no GitHub abre PR automatico quando encontra CVE em suas deps. Merge = seguro. Ignore = risco.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Dependabot</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Snyk</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">npm audit</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">CVE database</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">SCA (Software Composition Analysis)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">License compliance</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">SBOM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 7 -->
+                <div>
+                    <button onclick="toggleTopic('m54t7')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">7</div>
+                        <span class="text-left text-neutral-100 font-medium">🧪 Security Testing — "Pentest, SAST, DAST — testando seguranca"</span>
+                    </button>
+                    <div id="m54t7" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">SAST (analise estatica do codigo), DAST (teste da aplicacao rodando), pentest (hacker etico atacando). Automatizar SAST/DAST na CI, pentest periodicamente.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Bugs de seguranca pegos em review custam 10x menos que em producao, e 100x menos que apos um breach. Ex: GitHub Code Scanning (CodeQL) roda SAST em cada PR — encontra SQL injection, XSS, path traversal automaticamente. Gratuito para repos publicos.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">SAST (Semgrep, CodeQL)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">DAST (OWASP ZAP, Burp Suite)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Penetration testing</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Bug bounty programs</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Security headers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- M5.5 -->
+        <div class="bg-dark-800 border border-teal-500/30 rounded-2xl overflow-hidden">
+            <button onclick="toggleModule('m55')" class="w-full flex items-center justify-start gap-4 p-6 hover:bg-teal-500/10 transition-colors">
+                <div class="w-12 h-12 bg-teal-500/20 rounded-xl flex items-center justify-center text-2xl shrink-0">🔥</div>
+                <div class="text-left flex-1">
+                    <div class="text-xs font-semibold text-teal-400 uppercase tracking-wider">Modulo 5.5 — ~30 min</div>
+                    <h3 class="text-lg font-bold text-neutral-100">Incident Response e SRE</h3>
+                    <p class="text-sm text-neutral-400 mt-1">Quando o sistema cai — e ele VAI cair</p>
+                </div>
+                <div id="m55-icon" class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0 transition-transform">7</div>
+            </button>
+            <div id="m55" class="hidden border-t border-teal-500/30">
+                <!-- Topic 1 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m55t1')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">1</div>
+                        <span class="text-left text-neutral-100 font-medium">🚨 Incident Response — "O que fazer nos primeiros 5 minutos"</span>
+                    </button>
+                    <div id="m55t1" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Processo estruturado para responder a incidentes: detectar, comunicar, diagnosticar, mitigar, resolver, post-mortem.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Panico em incidente piora tudo. Processo claro reduz MTTR. Ex: O PagerDuty tem runbooks para cada tipo de incidente — "se error rate &gt; 10%: 1. Check dashboard X, 2. Verify deployment Y, 3. Rollback if needed". Seguir runbook em vez de improvisar.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Incident commander</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Communication channels</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Severity levels (SEV1-4)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">War room</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Status page</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Runbooks</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 2 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m55t2')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">2</div>
+                        <span class="text-left text-neutral-100 font-medium">📝 Post-Mortem — "Blameless analysis: o que aconteceu e como prevenir"</span>
+                    </button>
+                    <div id="m55t2" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Documento apos incidente: timeline, root cause, impacto, acoes corretivas. Blameless: foca no sistema, nao na pessoa.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Sem post-mortem, o mesmo incidente acontece de novo. Ex: O Google publica post-mortems internos para todos aprenderem. Template: "O que aconteceu" → "Por que aconteceu" → "O que vamos mudar" → "Action items com owners e deadlines".</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Blameless culture</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">5 Whys</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Timeline reconstruction</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Action items</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Follow-up tracking</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Learning from incidents</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 3 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m55t3')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">3</div>
+                        <span class="text-left text-neutral-100 font-medium">📖 Runbooks — "Procedimentos operacionais para emergencias"</span>
+                    </button>
+                    <div id="m55t3" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Documentacao passo-a-passo para cenarios comuns: "banco lento", "servico nao responde", "disco cheio", "certificado expirado".</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Em uma emergencia as 3h da manha, ninguem lembra o procedimento. O runbook e o GPS. Ex: Runbook "DB lento": 1. Checar pg_stat_activity (queries ativas), 2. Kill queries &gt; 30s, 3. Check locks, 4. Verify disk space, 5. Check for missing indexes. Seguir sequencialmente.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Runbook templates</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Decision trees</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Escalation procedures</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Automation of runbooks</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Living documentation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 4 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m55t4')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">4</div>
+                        <span class="text-left text-neutral-100 font-medium">🔄 Chaos Engineering — "Quebre em controlled para nao quebrar no real"</span>
+                    </button>
+                    <div id="m55t4" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Introduzir falhas deliberadas em producao para testar resiliencia: matar instancias, injetar latencia, simular partition.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Voce descobre fraquezas antes dos usuarios. Ex: O Netflix Chaos Monkey mata instancias EC2 aleatorias em producao. Se o sistema sobrevive, esta resiliente. Se nao, o time corrige antes que uma falha real aconteca.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Chaos Monkey (Netflix)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Gremlin</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Litmus</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Game days</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Blast radius control</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Steady state hypothesis</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 5 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m55t5')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">5</div>
+                        <span class="text-left text-neutral-100 font-medium">📊 SRE — Site Reliability Engineering — "Quando ops vira engenharia"</span>
+                    </button>
+                    <div id="m55t5" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Disciplina do Google que aplica engenharia de software a problemas de operacoes. Foco em automacao, SLOs, error budgets e reducao de toil.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">SRE e o framework que permite operar sistemas confiaveis sem inflar o time. Ex: O Google define: se o error budget esta OK (dentro do SLO), priorize features. Se o error budget esta baixo, congele features e melhore confiabilidade. Objetivos alinhados automaticamente.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">SRE principles</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Error budgets</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Toil budget</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">On-call practices</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Automation over process</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Blameless culture</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 6 -->
+                <div class="border-b border-dark-700">
+                    <button onclick="toggleTopic('m55t6')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">6</div>
+                        <span class="text-left text-neutral-100 font-medium">🔄 On-Call — "Plantao que nao destroi sua vida"</span>
+                    </button>
+                    <div id="m55t6" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Rotacao de pessoas responsaveis por responder a incidentes fora do horario. Boas praticas: compensacao, rotacao justa, ferramentas adequadas.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">On-call mal feito causa burnout e turnover. Ex: O PagerDuty recomenda: rotacao semanal, maximo 1 incidente/noite (se mais, os alertas estao errados), compensacao em folga ou $, runbooks para cada alerta. Se o oncall e acordado toda noite, o problema e a engenharia, nao a pessoa.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">On-call rotation</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Compensation</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Alert quality</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Escalation policies</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">PagerDuty/OpsGenie</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Secondary on-call</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Topic 7 -->
+                <div>
+                    <button onclick="toggleTopic('m55t7')" class="w-full flex items-center justify-start gap-4 p-5 hover:bg-teal-900/30 transition-colors">
+                        <div class="w-8 h-8 bg-teal-500/20 rounded-full flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">7</div>
+                        <span class="text-left text-neutral-100 font-medium">📈 Reliability Patterns — "Circuit breaker, retry, bulkhead, timeout"</span>
+                    </button>
+                    <div id="m55t7" class="hidden px-5 pb-5 space-y-3">
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">O que e</h4>
+                            <p class="text-neutral-300 text-sm">Padroes para construir sistemas resilientes: circuit breaker (para de chamar servico falho), retry (tenta de novo com backoff), bulkhead (isola falhas), timeout (nao espera para sempre).</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Por que aprender</h4>
+                            <p class="text-neutral-300 text-sm">Sem esses padroes, uma falha cascateia pelo sistema inteiro. Ex: Sem circuit breaker: servico de pagamento cai → servico de pedido espera → timeout → pool de conexoes esgota → servico de pedido cai → catalogo cai → tudo cai. Com circuit breaker: pagamento cai → circuit abre → pedido retorna "tente mais tarde" → sistema continua funcionando.</p>
+                        </div>
+                        <div class="bg-teal-900/30 rounded-xl p-4">
+                            <h4 class="text-teal-400 font-semibold text-sm mb-2">Conceitos-chave</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Circuit breaker (open/half-open/closed)</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Retry with exponential backoff</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Bulkhead pattern</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Timeout budgets</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Fallback responses</span>
+                                <span class="bg-teal-500/20 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">Graceful degradation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Navigation -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div class="flex flex-col sm:flex-row gap-4 justify-between">
+            <a href="../trilha4/index.html" class="flex items-center gap-2 bg-dark-800 border border-teal-500/30 rounded-xl px-6 py-4 hover:bg-teal-500/10 transition-colors group">
+                <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                <span class="text-neutral-300 group-hover:text-teal-400 transition-colors">Construindo na Pratica</span>
+            </a>
+            <a href="../trilha6/index.html" class="flex items-center gap-2 bg-teal-600 hover:bg-teal-500 rounded-xl px-6 py-4 transition-colors group justify-end">
+                <span class="text-white font-medium">Proxima: Escalando e Evoluindo</span>
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-dark-700 mt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <p class="text-center text-neutral-500 text-sm">Arquitetura 2030 — 2026</p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="relative w-full h-full max-w-5xl mx-auto p-4 sm:p-8 flex items-center justify-center">
+            <div class="bg-dark-800 rounded-2xl w-full h-[80vh] overflow-hidden border border-teal-500/30 relative">
+                <button onclick="closeModal()" class="absolute top-4 right-4 z-10 bg-dark-700 hover:bg-dark-600 rounded-lg p-2 transition-colors">
+                    <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <iframe id="modal-iframe" class="w-full h-full" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        const html = document.documentElement;
+        if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+            themeToggleDarkIcon.classList.remove('hidden');
+            html.classList.remove('dark');
+        } else {
+            themeToggleLightIcon.classList.remove('hidden');
+        }
+        themeToggle.addEventListener('click', () => {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Module toggle
+        function toggleModule(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+            }
+        }
+
+        // Topic toggle
+        function toggleTopic(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+            }
+        }
+
+        // Modal
+        function openModal(url) {
+            const modal = document.getElementById('modal');
+            const iframe = document.getElementById('modal-iframe');
+            iframe.src = url;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            const iframe = document.getElementById('modal-iframe');
+            modal.classList.add('hidden');
+            iframe.src = '';
+            document.body.style.overflow = '';
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+
+</body>
+</html>

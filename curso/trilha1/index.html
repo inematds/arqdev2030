@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T1 - Fundamentos de Arquitetura | Arquitetura 2030</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#eab308',
+                        dark: {
+                            600: '#4b5563',
+                            700: '#374151',
+                            800: '#1f2937',
+                            900: '#111827'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', system-ui, sans-serif; }
+        .topic-explanation { display: none; }
+        .topic-explanation.active { display: block; }
+
+        /* Light mode styles */
+        html:not(.dark) body { background-color: #f8fafc; }
+        html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+        html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+        html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+        html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+        html:not(.dark) .text-neutral-100 { color: #111827; }
+        html:not(.dark) .text-neutral-300 { color: #4b5563; }
+        html:not(.dark) .text-neutral-400 { color: #6b7280; }
+        html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+        html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+        html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+        html:not(.dark) .text-emerald-400 { color: #059669; }
+        html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+        html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+        html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+        html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+        html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+        html:not(.dark) .text-primary { color: #a16207; }
+        html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+        html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+        html:not(.dark) .text-sky-400 { color: #0369a1; }
+        html:not(.dark) .text-yellow-400 { color: #a16207; }
+        html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+        html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+        html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+        html:not(.dark) .bg-dark-700\/50 { background-color: rgba(243, 244, 246, 0.5); }
+        html:not(.dark) .bg-dark-700\/30 { background-color: rgba(243, 244, 246, 0.3); }
+        html:not(.dark) .hover\:bg-dark-700\/50:hover { background-color: rgba(243, 244, 246, 0.5); }
+        html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5, 150, 105, 0.06); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+    </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-md border-b border-dark-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <a href="../../index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                        <span class="text-yellow-400 font-bold text-lg hover:text-yellow-300 transition-colors">&#127959;&#65039; Arquitetura 2030</span>
+                    </a>
+                    <span class="text-neutral-500">|</span>
+                    <a href="#" class="text-sky-400 font-medium hover:text-sky-300 transition-colors">INEMA.CLUB</a>
+                </div>
+
+                <!-- Trilha Links -->
+                <div class="hidden md:flex items-center gap-1">
+                    <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">T1 Fundamentos</a>
+                    <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-medium text-neutral-400 hover:text-blue-400 hover:bg-dark-700/50 transition-all">T2 Decis&atilde;o</a>
+                    <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-medium text-neutral-400 hover:text-purple-400 hover:bg-dark-700/50 transition-all">T3 IA</a>
+                    <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-medium text-neutral-400 hover:text-amber-400 hover:bg-dark-700/50 transition-all">T4 Pr&aacute;tica</a>
+                    <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-medium text-neutral-400 hover:text-teal-400 hover:bg-dark-700/50 transition-all">T5 DevOps</a>
+                    <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-medium text-neutral-400 hover:text-rose-400 hover:bg-dark-700/50 transition-all">T6 Escala</a>
+                </div>
+
+                <!-- Theme Toggle -->
+                <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-dark-700/50 transition-colors" title="Alternar tema">
+                    <svg id="theme-icon-dark" class="w-5 h-5 text-yellow-400 hidden" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+                    </svg>
+                    <svg id="theme-icon-light" class="w-5 h-5 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Trilha Links -->
+            <div class="md:hidden flex overflow-x-auto gap-1 pb-3 -mx-4 px-4 scrollbar-hide">
+                <a href="index.html" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 whitespace-nowrap">T1 Fundamentos</a>
+                <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-xs font-medium text-neutral-400 hover:text-blue-400 whitespace-nowrap">T2 Decis&atilde;o</a>
+                <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-xs font-medium text-neutral-400 hover:text-purple-400 whitespace-nowrap">T3 IA</a>
+                <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-xs font-medium text-neutral-400 hover:text-amber-400 whitespace-nowrap">T4 Pr&aacute;tica</a>
+                <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-xs font-medium text-neutral-400 hover:text-teal-400 whitespace-nowrap">T5 DevOps</a>
+                <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-xs font-medium text-neutral-400 hover:text-rose-400 whitespace-nowrap">T6 Escala</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="relative overflow-hidden bg-gradient-to-br from-emerald-900/30 via-dark-900 to-dark-900 border-b border-dark-700">
+        <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-transparent"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="flex flex-col items-start gap-6">
+                <span class="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                    TRILHA 1
+                </span>
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-neutral-100 leading-tight">
+                    &#129521; Fundamentos de Arquitetura
+                </h1>
+                <p class="text-lg text-neutral-300 max-w-3xl leading-relaxed">
+                    Domine os conceitos fundamentais que todo arquiteto de software precisa conhecer. De estilos arquiteturais a princ&iacute;pios de design, de atributos de qualidade a padr&otilde;es de comunica&ccedil;&atilde;o entre sistemas.
+                </p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4 w-full max-w-2xl">
+                    <div class="bg-dark-800 rounded-xl p-4 border border-dark-700 text-center">
+                        <div class="text-2xl font-bold text-emerald-400">5</div>
+                        <div class="text-sm text-neutral-400 mt-1">M&oacute;dulos</div>
+                    </div>
+                    <div class="bg-dark-800 rounded-xl p-4 border border-dark-700 text-center">
+                        <div class="text-2xl font-bold text-emerald-400">35</div>
+                        <div class="text-sm text-neutral-400 mt-1">T&oacute;picos</div>
+                    </div>
+                    <div class="bg-dark-800 rounded-xl p-4 border border-dark-700 text-center">
+                        <div class="text-2xl font-bold text-emerald-400">~3h</div>
+                        <div class="text-sm text-neutral-400 mt-1">Dura&ccedil;&atilde;o</div>
+                    </div>
+                    <div class="bg-dark-800 rounded-xl p-4 border border-dark-700 text-center">
+                        <div class="text-2xl font-bold text-emerald-400">B&aacute;sico</div>
+                        <div class="text-sm text-neutral-400 mt-1">N&iacute;vel</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+
+        <!-- Module 1.1 -->
+        <section class="bg-dark-800 rounded-2xl border border-dark-700 overflow-hidden">
+            <div class="p-6 sm:p-8">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="text-sm font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full">M&oacute;dulo 1.1</span>
+                    <span class="text-sm text-neutral-500">~35 min</span>
+                </div>
+                <h2 class="text-2xl font-bold text-neutral-100 mt-3">&#127963;&#65039; O que &eacute; Arquitetura de Software</h2>
+                <p class="text-neutral-400 mt-2 italic">&ldquo;A arte de tomar decis&otilde;es estruturais que resistem ao tempo&rdquo;</p>
+
+                <div class="mt-6 space-y-3">
+                    <!-- Topic 1 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m11-t1')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">1</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128208; Defini&ccedil;&atilde;o e Escopo</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Al&eacute;m do c&oacute;digo: decis&otilde;es que moldam sistemas&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m11-t1" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Arquitetura de software &eacute; o conjunto de decis&otilde;es estruturais que definem como um sistema &eacute; organizado, como seus componentes se comunicam e como ele evolui. N&atilde;o &eacute; sobre linguagens ou frameworks &mdash; &eacute; sobre trade-offs.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Sem entender arquitetura, voc&ecirc; constr&oacute;i sistemas que funcionam hoje mas quebram amanh&atilde;. Ex: O Twitter come&ccedil;ou como um monolito Ruby on Rails e precisou reescrever quando atingiu 200M de tweets/dia.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Estrutura vs. Comportamento, Decis&otilde;es revers&iacute;veis vs. irrevers&iacute;veis, Arquitetura como &ldquo;as coisas dif&iacute;ceis de mudar depois&rdquo;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 2 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m11-t2')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">2</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#127919; O Papel do Arquiteto</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Traduzir neg&oacute;cio em estrutura t&eacute;cnica&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m11-t2" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">O arquiteto &eacute; quem conecta requisitos de neg&oacute;cio a decis&otilde;es t&eacute;cnicas. N&atilde;o &eacute; o &ldquo;programador s&ecirc;nior&rdquo; &mdash; &eacute; quem garante que o sistema atende necessidades atuais e futuras.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Times sem arquiteto tomam decis&otilde;es locais que conflitam globalmente. Ex: Na Amazon, antes dos &ldquo;two-pizza teams&rdquo;, cada time escolhia tecnologias diferentes e a integra&ccedil;&atilde;o era um pesadelo.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Arquiteto vs. Tech Lead, Decis&otilde;es t&eacute;cnicas vs. de produto, Comunica&ccedil;&atilde;o como skill principal</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 3 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m11-t3')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">3</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128260; Requisitos Funcionais vs. N&atilde;o-Funcionais</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;O que o sistema faz vs. como faz&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m11-t3" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Requisitos funcionais descrevem comportamento (login, checkout). N&atilde;o-funcionais descrevem qualidades (responder em &lt;200ms, suportar 10k req/s, 99.9% uptime).</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">A maioria dos problemas em produ&ccedil;&atilde;o vem de requisitos n&atilde;o-funcionais ignorados. Ex: O Healthcare.gov falhou no lan&ccedil;amento porque s&oacute; testaram funcionalidade, n&atilde;o carga (250k usu&aacute;rios simult&acirc;neos vs. 50k planejados).</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Performance, Escalabilidade, Disponibilidade, Seguran&ccedil;a, Manutenibilidade, Observabilidade</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 4 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m11-t4')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">4</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128202; Trade-offs e Restri&ccedil;&otilde;es</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Toda decis&atilde;o arquitetural &eacute; uma troca&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m11-t4" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">N&atilde;o existe arquitetura perfeita. Cada escolha favorece uma qualidade em detrimento de outra. CAP theorem &eacute; o exemplo cl&aacute;ssico: consist&ecirc;ncia, disponibilidade ou toler&acirc;ncia a parti&ccedil;&atilde;o &mdash; escolha dois.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Arquitetos juniores buscam a &ldquo;melhor&rdquo; solu&ccedil;&atilde;o. Arquitetos s&ecirc;niores entendem que toda solu&ccedil;&atilde;o tem custo. Ex: Netflix escolheu eventual consistency para ganhar disponibilidade &mdash; seu cat&aacute;logo pode estar 30s desatualizado, mas nunca fica fora do ar.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">CAP Theorem, Lat&ecirc;ncia vs. Throughput, Complexidade vs. Flexibilidade, Custo vs. Performance</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 5 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m11-t5')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">5</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128506;&#65039; Contexto e Restri&ccedil;&otilde;es do Projeto</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Arquitetura que ignora contexto &eacute; exerc&iacute;cio acad&ecirc;mico&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m11-t5" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Arquitetura boa &eacute; aquela que funciona dentro das restri&ccedil;&otilde;es reais: tamanho do time, budget, prazo, conhecimento t&eacute;cnico existente, regula&ccedil;&atilde;o.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Microsservi&ccedil;os s&atilde;o elegantes, mas se seu time tem 3 pessoas, &eacute; suic&iacute;dio operacional. Ex: Basecamp (37signals) fatura US$100M/ano com um monolito Ruby on Rails e 70 pessoas. N&atilde;o precisam de microsservi&ccedil;os.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Conway&rsquo;s Law, Restri&ccedil;&otilde;es de time, Budget e timeline, D&iacute;vida t&eacute;cnica planejada vs. acidental</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 6 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m11-t6')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">6</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128221; Documenta&ccedil;&atilde;o Arquitetural</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Se n&atilde;o est&aacute; documentado, n&atilde;o foi decidido&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m11-t6" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Registro formal das decis&otilde;es arquiteturais, seus motivos e trade-offs aceitos. Inclui diagramas C4, ADRs (Architecture Decision Records) e documenta&ccedil;&atilde;o viva.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Sem documenta&ccedil;&atilde;o, cada novo desenvolvedor redescobre (e frequentemente reverte) decis&otilde;es anteriores. Ex: O Spotify documenta todas as decis&otilde;es arquiteturais em ADRs p&uacute;blicos para os times &mdash; reduz 40% das discuss&otilde;es repetidas.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Modelo C4, Architecture Decision Records (ADR), Documenta&ccedil;&atilde;o viva vs. est&aacute;tica, Diagramas como comunica&ccedil;&atilde;o</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 7 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m11-t7')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">7</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#127757; Evolu&ccedil;&atilde;o da Arquitetura de Software</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;De mainframes a serverless: 60 anos em 7 minutos&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m11-t7" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">A hist&oacute;ria da arquitetura de software &eacute; uma progress&atilde;o de centralizado para distribu&iacute;do: mainframes &rarr; client-server &rarr; SOA &rarr; microsservi&ccedil;os &rarr; serverless &rarr; edge computing.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Entender a evolu&ccedil;&atilde;o ajuda a n&atilde;o repetir erros e a avaliar tend&ecirc;ncias com ceticismo informado. Ex: SOA dos anos 2000 prometia tudo que microsservi&ccedil;os prometem hoje &mdash; e falhou pelas mesmas raz&otilde;es quando mal implementada.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Mainframes e batch, Client-server, SOA e ESB, Microsservi&ccedil;os, Serverless e FaaS, Edge computing</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-6 flex items-center justify-start gap-3">
+                    <button onclick="openModal('modal-m11')" class="px-5 py-2.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl font-medium text-sm hover:bg-emerald-500/30 transition-colors">Ver em Modal</button>
+                    <a href="modulo-1-1.html" class="px-5 py-2.5 bg-dark-700 text-neutral-300 border border-dark-600 rounded-xl font-medium text-sm hover:bg-dark-600 transition-colors">Ver Completo</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Module 1.2 -->
+        <section class="bg-dark-800 rounded-2xl border border-dark-700 overflow-hidden">
+            <div class="p-6 sm:p-8">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="text-sm font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full">M&oacute;dulo 1.2</span>
+                    <span class="text-sm text-neutral-500">~40 min</span>
+                </div>
+                <h2 class="text-2xl font-bold text-neutral-100 mt-3">&#127970; Estilos Arquiteturais</h2>
+                <p class="text-neutral-400 mt-2 italic">&ldquo;Monolito, microsservi&ccedil;os, serverless &mdash; quando usar cada um&rdquo;</p>
+
+                <div class="mt-6 space-y-3">
+                    <!-- Topic 1 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m12-t1')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">1</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#129521; Monolito</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;O ponto de partida inteligente&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m12-t1" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Aplica&ccedil;&atilde;o onde todo o c&oacute;digo roda como uma &uacute;nica unidade deploy&aacute;vel. Um processo, um banco, um deploy. &Eacute; o estilo mais simples e frequentemente o mais eficiente para come&ccedil;ar.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">95% dos projetos deveriam come&ccedil;ar como monolito. Ex: Shopify processa US$175B/ano em GMV com um monolito Ruby on Rails. Eles modularizaram internamente sem quebrar em microsservi&ccedil;os.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Single deployable unit, Simplicidade operacional, Acoplamento interno, Quando o monolito vira problema</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 2 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m12-t2')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">2</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#129513; Monolito Modular</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;O melhor dos dois mundos&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m12-t2" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Monolito com limites internos claros entre m&oacute;dulos. Cada m&oacute;dulo tem sua interface p&uacute;blica, seus dados privados, mas tudo roda no mesmo processo.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">&Eacute; o stepping stone natural entre monolito e microsservi&ccedil;os &mdash; ganha modularidade sem complexidade distribu&iacute;da. Ex: O Basecamp usa monolito modular. Cada &ldquo;dom&iacute;nio&rdquo; (projects, messages, files) &eacute; um m&oacute;dulo independente dentro do mesmo Rails app.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Bounded contexts internos, Interfaces entre m&oacute;dulos, Dados privados por m&oacute;dulo, Migra&ccedil;&atilde;o gradual</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 3 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m12-t3')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">3</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128279; Microsservi&ccedil;os</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Autonomia de times, n&atilde;o de tecnologia&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m12-t3" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Cada servi&ccedil;o &eacute; independente: deploy pr&oacute;prio, banco pr&oacute;prio, equipe pr&oacute;pria. Comunica&ccedil;&atilde;o via API ou mensageria.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Microsservi&ccedil;os resolvem problemas organizacionais, n&atilde;o t&eacute;cnicos. Se seu time n&atilde;o precisa de deploys independentes, microsservi&ccedil;os s&atilde;o overhead. Ex: Amazon migrou para microsservi&ccedil;os quando tinha 1000+ devs e deploys bloqueavam uns aos outros. N&atilde;o fez isso com 50 devs.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Independ&ecirc;ncia de deploy, Database per service, API Gateway, Service mesh, Complexidade operacional exponencial</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 4 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m12-t4')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">4</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#9729;&#65039; Serverless</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Pague por execu&ccedil;&atilde;o, n&atilde;o por servidor&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m12-t4" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Fun&ccedil;&otilde;es que executam sob demanda, sem servidor dedicado. AWS Lambda, Cloudflare Workers, Vercel Functions.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Ideal para workloads imprevis&iacute;veis e spiky. Ex: A Coca-Cola usa Lambda para processar vendas de m&aacute;quinas autom&aacute;ticas &mdash; 0 custo quando ningu&eacute;m compra, escala instant&acirc;nea no hor&aacute;rio de almo&ccedil;o.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Functions as a Service (FaaS), Cold start, Limites de execu&ccedil;&atilde;o, Vendor lock-in, Stateless by design</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 5 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m12-t5')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">5</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128225; Event-Driven Architecture</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Reagir em vez de perguntar&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m12-t5" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Componentes se comunicam atrav&eacute;s de eventos ass&iacute;ncronos. Um publica, v&aacute;rios consomem. Desacoplamento m&aacute;ximo.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">EDA &eacute; o padr&atilde;o natural para sistemas que precisam reagir a mudan&ccedil;as em tempo real. Ex: O Uber usa EDA para coordenar corridas &mdash; quando um motorista aceita, eventos disparam atualiza&ccedil;&atilde;o do mapa, notifica&ccedil;&atilde;o ao passageiro, c&aacute;lculo de rota e billing, tudo em paralelo.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Publish/subscribe, Event sourcing, CQRS, Message brokers (Kafka, RabbitMQ, Redis Streams), Eventual consistency</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 6 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m12-t6')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">6</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#127760; Arquitetura em Camadas (Layered)</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Separa&ccedil;&atilde;o de responsabilidades cl&aacute;ssica&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m12-t6" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Sistema dividido em camadas com responsabilidades distintas: apresenta&ccedil;&atilde;o, l&oacute;gica de neg&oacute;cio, acesso a dados. Cada camada s&oacute; fala com a adjacente.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">&Eacute; o padr&atilde;o mais usado em aplica&ccedil;&otilde;es web tradicionais e o ponto de partida para entender separa&ccedil;&atilde;o de concerns. Ex: A maioria dos apps Django/Rails segue MVC &mdash; controller (apresenta&ccedil;&atilde;o), model (dados), service layer (neg&oacute;cio).</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Presentation layer, Business logic layer, Data access layer, MVC/MVP/MVVM, Dependency rule</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 7 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m12-t7')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">7</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#127959;&#65039; Hexagonal / Clean Architecture</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;O neg&oacute;cio no centro, infraestrutura nas bordas&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m12-t7" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">O core da aplica&ccedil;&atilde;o (regras de neg&oacute;cio) n&atilde;o depende de framework, banco ou API externa. Tudo &eacute; plug&aacute;vel via ports e adapters.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Permite trocar banco, framework ou API sem reescrever l&oacute;gica de neg&oacute;cio. Ex: O Nubank usa Clean Architecture &mdash; migraram de Datomic para PostgreSQL em alguns servi&ccedil;os sem tocar na l&oacute;gica de neg&oacute;cio.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Ports and Adapters, Dependency Inversion, Use Cases, Domain-centric design, Testabilidade</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-6 flex items-center justify-start gap-3">
+                    <button onclick="openModal('modal-m12')" class="px-5 py-2.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl font-medium text-sm hover:bg-emerald-500/30 transition-colors">Ver em Modal</button>
+                    <a href="modulo-1-2.html" class="px-5 py-2.5 bg-dark-700 text-neutral-300 border border-dark-600 rounded-xl font-medium text-sm hover:bg-dark-600 transition-colors">Ver Completo</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Module 1.3 -->
+        <section class="bg-dark-800 rounded-2xl border border-dark-700 overflow-hidden">
+            <div class="p-6 sm:p-8">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="text-sm font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full">M&oacute;dulo 1.3</span>
+                    <span class="text-sm text-neutral-500">~35 min</span>
+                </div>
+                <h2 class="text-2xl font-bold text-neutral-100 mt-3">&#9889; Princ&iacute;pios de Design</h2>
+                <p class="text-neutral-400 mt-2 italic">&ldquo;SOLID, DRY, KISS e os padr&otilde;es que todo arquiteto deve conhecer&rdquo;</p>
+
+                <div class="mt-6 space-y-3">
+                    <!-- Topic 1 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m13-t1')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">1</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#127919; SOLID</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;5 princ&iacute;pios que evitam c&oacute;digo fr&aacute;gil&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m13-t1" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion. S&atilde;o princ&iacute;pios de design orientado a objetos que guiam decis&otilde;es arquiteturais.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">C&oacute;digo que viola SOLID se torna imposs&iacute;vel de manter. Ex: Uma classe PaymentProcessor que tamb&eacute;m envia emails, gera PDFs e atualiza invent&aacute;rio viola SRP &mdash; quando muda a regra de email, voc&ecirc; arrisca quebrar pagamentos.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">SRP, OCP, LSP, ISP, DIP com exemplos pr&aacute;ticos de viola&ccedil;&atilde;o e corre&ccedil;&atilde;o</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 2 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m13-t2')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">2</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128161; DRY, KISS e YAGNI</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Simplicidade como virtude&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m13-t2" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Don&rsquo;t Repeat Yourself, Keep It Simple Stupid, You Ain&rsquo;t Gonna Need It. Tr&ecirc;s mantras contra over-engineering.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">DRY mal aplicado gera abstra&ccedil;&otilde;es prematuras piores que duplica&ccedil;&atilde;o. Ex: Copiar 3 linhas de valida&ccedil;&atilde;o em 2 controllers &eacute; melhor que criar um ValidationFramework que 2 pessoas v&atilde;o usar.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Duplica&ccedil;&atilde;o de conhecimento vs. duplica&ccedil;&atilde;o de c&oacute;digo, Abstra&ccedil;&otilde;es prematuras, When to generalize</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 3 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m13-t3')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">3</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#129516; Design Patterns Essenciais</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Solu&ccedil;&otilde;es testadas para problemas recorrentes&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m13-t3" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Padr&otilde;es GoF (Gang of Four) e padr&otilde;es modernos: Factory, Strategy, Observer, Repository, Dependency Injection.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Patterns s&atilde;o vocabul&aacute;rio compartilhado. Quando voc&ecirc; diz &ldquo;usa Strategy aqui&rdquo;, o time inteiro entende. Ex: Stripe usa Strategy pattern para processadores de pagamento &mdash; adicionar Pix foi criar um novo strategy, sem tocar no core.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Creational (Factory, Builder), Structural (Adapter, Facade), Behavioral (Strategy, Observer, Command)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 4 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m13-t4')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">4</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128268; Acoplamento e Coes&atilde;o</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;O par mais importante da arquitetura&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m13-t4" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Acoplamento &eacute; o grau de depend&ecirc;ncia entre m&oacute;dulos. Coes&atilde;o &eacute; o grau em que elementos de um m&oacute;dulo pertencem juntos. O ideal: baixo acoplamento, alta coes&atilde;o.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">M&oacute;dulos muito acoplados cascateiam falhas. Ex: Se seu m&oacute;dulo de auth depende diretamente do m&oacute;dulo de billing, uma mudan&ccedil;a no billing pode derrubar o login.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Tight vs. loose coupling, Functional vs. temporal cohesion, Metrics de acoplamento, Refactoring strategies</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 5 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m13-t5')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">5</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128230; Separa&ccedil;&atilde;o de Concerns</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Cada parte faz uma coisa bem&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m13-t5" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Dividir o sistema em partes que lidam com uma preocupa&ccedil;&atilde;o espec&iacute;fica. Frontend n&atilde;o sabe de banco. API n&atilde;o sabe de UI. Banco n&atilde;o sabe de regra de neg&oacute;cio.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Viola&ccedil;&atilde;o gera c&oacute;digo spaghetti onde tudo depende de tudo. Ex: SQL no template HTML (viola&ccedil;&atilde;o cl&aacute;ssica que ainda acontece) &mdash; muda o layout, quebra a query.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Vertical vs. horizontal slicing, Cross-cutting concerns, Aspect-oriented design, Layered vs. feature-based organization</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 6 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m13-t6')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">6</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128737;&#65039; Princ&iacute;pio da Responsabilidade &Uacute;nica na Arquitetura</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Um servi&ccedil;o, uma raz&atilde;o para mudar&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m13-t6" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Aplica&ccedil;&atilde;o do SRP em n&iacute;vel arquitetural. Cada servi&ccedil;o/m&oacute;dulo deve ter apenas uma raz&atilde;o para mudar, pertencendo a um &uacute;nico dom&iacute;nio de neg&oacute;cio.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Servi&ccedil;os que fazem muita coisa se tornam mini-monolitos distribu&iacute;dos. Ex: Um &ldquo;UserService&rdquo; que gerencia auth, perfil, prefer&ecirc;ncias e billing &eacute; um monolito disfar&ccedil;ado de microsservi&ccedil;o.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Bounded Context, Domain ownership, Raz&otilde;es para mudan&ccedil;a, Decomposi&ccedil;&atilde;o por dom&iacute;nio vs. por camada t&eacute;cnica</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 7 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m13-t7')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">7</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128260; Invers&atilde;o de Depend&ecirc;ncia na Pr&aacute;tica</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Dependa de abstra&ccedil;&otilde;es, n&atilde;o de detalhes&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m13-t7" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">M&oacute;dulos de alto n&iacute;vel n&atilde;o devem depender de m&oacute;dulos de baixo n&iacute;vel. Ambos devem depender de abstra&ccedil;&otilde;es.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Sem invers&atilde;o de depend&ecirc;ncia, seu core de neg&oacute;cio fica preso ao framework e ao banco. Ex: Sua l&oacute;gica de &ldquo;aprovar pedido&rdquo; n&atilde;o deve importar se usa PostgreSQL ou MongoDB &mdash; injete a interface, n&atilde;o a implementa&ccedil;&atilde;o.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Dependency Injection, Interface-based design, Plugin architecture, Testabilidade como benef&iacute;cio colateral</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-6 flex items-center justify-start gap-3">
+                    <button onclick="openModal('modal-m13')" class="px-5 py-2.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl font-medium text-sm hover:bg-emerald-500/30 transition-colors">Ver em Modal</button>
+                    <a href="modulo-1-3.html" class="px-5 py-2.5 bg-dark-700 text-neutral-300 border border-dark-600 rounded-xl font-medium text-sm hover:bg-dark-600 transition-colors">Ver Completo</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Module 1.4 -->
+        <section class="bg-dark-800 rounded-2xl border border-dark-700 overflow-hidden">
+            <div class="p-6 sm:p-8">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="text-sm font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full">M&oacute;dulo 1.4</span>
+                    <span class="text-sm text-neutral-500">~35 min</span>
+                </div>
+                <h2 class="text-2xl font-bold text-neutral-100 mt-3">&#128274; Qualidade e Atributos de Qualidade</h2>
+                <p class="text-neutral-400 mt-2 italic">&ldquo;Performance, seguran&ccedil;a, disponibilidade &mdash; os -ilities que definem o sucesso&rdquo;</p>
+
+                <div class="mt-6 space-y-3">
+                    <!-- Topic 1 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m14-t1')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">1</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#9889; Performance</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;R&aacute;pido o suficiente &eacute; melhor que r&aacute;pido demais&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m14-t1" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Tempo de resposta (lat&ecirc;ncia), quantidade de requisi&ccedil;&otilde;es processadas (throughput) e uso eficiente de recursos. Performance &eacute; sobre atender SLAs, n&atilde;o sobre ser o mais r&aacute;pido poss&iacute;vel.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Cada 100ms a mais no carregamento reduz convers&atilde;o em 1% (Amazon). Performance impacta diretamente receita.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">P50/P95/P99 latency, Throughput vs. latency, Profiling e bottlenecks, Caching strategies (Redis, CDN, browser)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 2 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m14-t2')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">2</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128200; Escalabilidade</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Crescer sem reescrever&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m14-t2" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Capacidade de lidar com aumento de carga (usu&aacute;rios, dados, transa&ccedil;&otilde;es) sem degrada&ccedil;&atilde;o significativa.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Sistemas que n&atilde;o escalam for&ccedil;am reescritas caras. Ex: O Instagram escalou de 0 a 30M de usu&aacute;rios em 2 anos com apenas 3 engenheiros &mdash; gra&ccedil;as a decis&otilde;es arquiteturais certas (PostgreSQL + Redis + memcached).</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Vertical vs. horizontal scaling, Stateless services, Database sharding, Read replicas, Load balancing</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 3 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m14-t3')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">3</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128737;&#65039; Seguran&ccedil;a</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Security by design, n&atilde;o by afterthought&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m14-t3" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Prote&ccedil;&atilde;o contra acesso n&atilde;o autorizado, manipula&ccedil;&atilde;o de dados e ataques. Inclui autentica&ccedil;&atilde;o, autoriza&ccedil;&atilde;o, criptografia e auditoria.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Uma brecha de seguran&ccedil;a pode encerrar uma empresa. Ex: O breach da Equifax (2017) exp&ocirc;s dados de 147M de pessoas por um patch de Apache Struts n&atilde;o aplicado &mdash; custou US$700M em multas.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">OWASP Top 10, Zero Trust Architecture, JWT/OAuth2, Encryption at rest and in transit, Principle of Least Privilege</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 4 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m14-t4')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">4</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#9989; Disponibilidade</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;O sistema mais elegante &eacute; in&uacute;til se est&aacute; fora do ar&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m14-t4" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Percentual de tempo que o sistema est&aacute; operacional. 99.9% = 8.7h de downtime/ano. 99.99% = 52min/ano.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">SLAs definem o neg&oacute;cio. Ex: AWS S3 prometia 99.99% e quando caiu por 4h em 2017, derrubou metade da internet junto (Netflix, Slack, Trello dependiam dele).</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">SLA/SLO/SLI, Redund&acirc;ncia, Failover, Health checks, Circuit breaker pattern, Chaos engineering</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 5 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m14-t5')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">5</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128295; Manutenibilidade</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;C&oacute;digo que o pr&oacute;ximo desenvolvedor agradece&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m14-t5" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Facilidade de entender, modificar e corrigir o sistema. Inclui legibilidade, modularidade, testabilidade e documenta&ccedil;&atilde;o.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Voc&ecirc; gasta 10x mais tempo mantendo c&oacute;digo do que escrevendo. Ex: O Google estima que 70% do custo de software est&aacute; em manuten&ccedil;&atilde;o, n&atilde;o em desenvolvimento inicial.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Cyclomatic complexity, Code review culture, Refactoring cont&iacute;nuo, Technical debt management, Readability &gt; cleverness</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 6 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m14-t6')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">6</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128269; Observabilidade</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Voc&ecirc; n&atilde;o pode consertar o que n&atilde;o pode ver&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m14-t6" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Capacidade de entender o estado interno do sistema atrav&eacute;s de outputs externos: logs, m&eacute;tricas e traces. Os &ldquo;3 pilares&rdquo; da observabilidade.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Em sistemas distribu&iacute;dos, bugs reproduz&iacute;veis em local s&atilde;o a exce&ccedil;&atilde;o. Ex: O Stripe usa distributed tracing para acompanhar cada requisi&ccedil;&atilde;o de pagamento por 15+ servi&ccedil;os &mdash; sem isso, debugar levaria horas em vez de minutos.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Logs estruturados, M&eacute;tricas (Prometheus/Grafana), Distributed tracing (Jaeger/OpenTelemetry), Alerting inteligente, Dashboards operacionais</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 7 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m14-t7')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">7</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128260; Testabilidade</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Arquitetura que n&atilde;o facilita testes est&aacute; errada&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m14-t7" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">O grau em que o sistema permite ser testado automaticamente em diferentes n&iacute;veis: unit&aacute;rio, integra&ccedil;&atilde;o, end-to-end, contrato.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Se testar &eacute; dif&iacute;cil, o time para de testar. Ex: O Nubank tem 90%+ de cobertura em Clojure porque a arquitetura facilita &mdash; fun&ccedil;&otilde;es puras, imutabilidade, inje&ccedil;&atilde;o de depend&ecirc;ncia everywhere.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Test pyramid, Contract testing, Property-based testing, Mutation testing, Test doubles (mocks, stubs, fakes)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-6 flex items-center justify-start gap-3">
+                    <button onclick="openModal('modal-m14')" class="px-5 py-2.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl font-medium text-sm hover:bg-emerald-500/30 transition-colors">Ver em Modal</button>
+                    <a href="modulo-1-4.html" class="px-5 py-2.5 bg-dark-700 text-neutral-300 border border-dark-600 rounded-xl font-medium text-sm hover:bg-dark-600 transition-colors">Ver Completo</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Module 1.5 -->
+        <section class="bg-dark-800 rounded-2xl border border-dark-700 overflow-hidden">
+            <div class="p-6 sm:p-8">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="text-sm font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full">M&oacute;dulo 1.5</span>
+                    <span class="text-sm text-neutral-500">~30 min</span>
+                </div>
+                <h2 class="text-2xl font-bold text-neutral-100 mt-3">&#127760; Comunica&ccedil;&atilde;o entre Sistemas</h2>
+                <p class="text-neutral-400 mt-2 italic">&ldquo;REST, GraphQL, gRPC, mensageria &mdash; como sistemas conversam&rdquo;</p>
+
+                <div class="mt-6 space-y-3">
+                    <!-- Topic 1 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m15-t1')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">1</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#127757; REST APIs</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;O padr&atilde;o que domina a web&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m15-t1" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Architectural style baseado em recursos (URLs), verbos HTTP (GET, POST, PUT, DELETE) e representa&ccedil;&otilde;es (JSON). Stateless por design.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">REST &eacute; a lingua franca de APIs web. ~83% das APIs p&uacute;blicas s&atilde;o REST. Ex: A API do GitHub &eacute; REST pura &mdash; cada recurso (/repos, /issues, /pulls) &eacute; um endpoint previs&iacute;vel.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Resources, HTTP verbs, Status codes, HATEOAS, Versionamento, Rate limiting</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 2 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m15-t2')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">2</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128302; GraphQL</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Pe&ccedil;a exatamente o que precisa&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m15-t2" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Query language para APIs onde o cliente define a estrutura da resposta. Uma &uacute;nica URL, m&uacute;ltiplas queries poss&iacute;veis.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Resolve over-fetching e under-fetching de REST. Ex: O app do Facebook carregava 15+ endpoints REST para montar o feed. Com GraphQL, uma query retorna exatamente os dados necess&aacute;rios &mdash; reduziu uso de dados mobile em 40%.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Schema-first, Queries e Mutations, Resolvers, N+1 problem, Fragments, Subscriptions para real-time</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 3 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m15-t3')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">3</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#9889; gRPC</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Performance m&aacute;xima entre servi&ccedil;os&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m15-t3" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Framework RPC do Google usando Protocol Buffers (protobuf) e HTTP/2. Fortemente tipado, com gera&ccedil;&atilde;o autom&aacute;tica de c&oacute;digo.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Quando lat&ecirc;ncia entre servi&ccedil;os importa. Ex: O Google usa gRPC internamente para comunica&ccedil;&atilde;o entre microsservi&ccedil;os &mdash; 10x mais r&aacute;pido que REST+JSON em cen&aacute;rios de alta frequ&ecirc;ncia.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Protocol Buffers, HTTP/2 streaming, Strongly typed contracts, Code generation, Ideal para service-to-service</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 4 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m15-t4')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">4</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128232; Mensageria Ass&iacute;ncrona</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Fire and forget com garantias&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m15-t4" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Comunica&ccedil;&atilde;o via mensagens em filas ou t&oacute;picos. O produtor n&atilde;o espera resposta. Kafka, RabbitMQ, SQS, Redis Streams.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Desacopla sistemas e absorve picos de carga. Ex: O Mercado Livre processa 1M+ de transa&ccedil;&otilde;es/dia via Kafka &mdash; o checkout n&atilde;o espera o email de confirma&ccedil;&atilde;o; publica um evento e segue.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Queue vs. Topic, At-least-once vs. exactly-once, Dead letter queue, Backpressure, Idempot&ecirc;ncia</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 5 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m15-t5')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">5</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128260; Webhooks</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Notifica&ccedil;&atilde;o push entre sistemas&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m15-t5" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">HTTP callbacks &mdash; um sistema notifica outro quando algo acontece, enviando um POST com dados do evento. Invers&atilde;o do modelo poll.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Webhooks s&atilde;o a espinha dorsal de integra&ccedil;&otilde;es modernas. Ex: Stripe, GitHub, Slack &mdash; todos usam webhooks. Quando um pagamento &eacute; aprovado no Stripe, seu sistema recebe um POST instant&acirc;neo em vez de ficar polling.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Retry policies, Signature verification (HMAC), Idempotency keys, Timeout handling, n8n como webhook receiver</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 6 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m15-t6')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">6</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#127754; WebSockets e SSE</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;Comunica&ccedil;&atilde;o em tempo real&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m15-t6" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">Conex&atilde;o bidirecional persistente (WebSocket) ou stream unidirecional do servidor (SSE). Para dados que mudam constantemente.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Quando polling n&atilde;o &eacute; suficiente. Ex: O Figma usa WebSockets para colabora&ccedil;&atilde;o em tempo real &mdash; cada cursor, cada mudan&ccedil;a de shape &eacute; sincronizada em &lt;50ms entre todos os colaboradores.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Full-duplex vs. half-duplex, Connection management, Heartbeat, Scaling WebSockets, SSE como alternativa mais simples</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 7 -->
+                    <div class="border border-dark-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleTopic('m15-t7')" class="w-full flex items-center gap-4 p-4 hover:bg-dark-700/50 transition-colors text-left">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold border border-emerald-500/30">7</span>
+                            <span class="flex-1">
+                                <span class="font-semibold text-neutral-100">&#128256; API Gateway e Service Mesh</span>
+                                <span class="block text-sm text-neutral-400 mt-0.5">&ldquo;O middleware dos microsservi&ccedil;os&rdquo;</span>
+                            </span>
+                        </button>
+                        <div id="m15-t7" class="topic-explanation px-4 pb-4">
+                            <div class="bg-dark-700/30 rounded-lg p-4 space-y-3 ml-12">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">O que &eacute;</h4>
+                                    <p class="text-sm text-neutral-300">API Gateway &eacute; o ponto de entrada &uacute;nico para APIs externas (Kong, AWS API Gateway). Service Mesh gerencia comunica&ccedil;&atilde;o interna (Istio, Linkerd).</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Por que aprender</h4>
+                                    <p class="text-sm text-neutral-300">Sem gateway, cada servi&ccedil;o reimplementa auth, rate limiting e logging. Ex: A Netflix usa Zuul como API Gateway &mdash; 2B+ requests/dia passam por ele antes de chegar aos microsservi&ccedil;os.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-emerald-400 mb-1">Conceitos-chave</h4>
+                                    <p class="text-sm text-neutral-300">Reverse proxy, Rate limiting, Circuit breaker, mTLS, Sidecar pattern, Observability autom&aacute;tica</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-6 flex items-center justify-start gap-3">
+                    <button onclick="openModal('modal-m15')" class="px-5 py-2.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl font-medium text-sm hover:bg-emerald-500/30 transition-colors">Ver em Modal</button>
+                    <a href="modulo-1-5.html" class="px-5 py-2.5 bg-dark-700 text-neutral-300 border border-dark-600 rounded-xl font-medium text-sm hover:bg-dark-600 transition-colors">Ver Completo</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="flex items-center justify-between pt-8 border-t border-dark-700">
+            <a href="../../index.html" class="flex items-center gap-2 px-5 py-3 bg-dark-800 border border-dark-700 rounded-xl text-neutral-300 hover:bg-dark-700 transition-colors font-medium text-sm">
+                &larr; Voltar ao In&iacute;cio
+            </a>
+            <a href="../trilha2/index.html" class="flex items-center gap-2 px-5 py-3 bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-400 hover:bg-emerald-500/30 transition-colors font-medium text-sm">
+                Pr&oacute;xima: Estrat&eacute;gias de Decis&atilde;o &rarr;
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-dark-700 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-neutral-500 text-sm">
+            Arquitetura 2030 &mdash; 2026
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Modal M1.1 -->
+    <div id="modal-m11" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/70 backdrop-blur-sm">
+        <div class="relative w-full max-w-5xl h-[90vh] mx-4 bg-dark-900 rounded-2xl border border-dark-700 overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between p-4 border-b border-dark-700">
+                <h3 class="text-lg font-bold text-neutral-100">M&oacute;dulo 1.1 &mdash; O que &eacute; Arquitetura de Software</h3>
+                <button onclick="closeModal('modal-m11')" class="p-2 hover:bg-dark-700 rounded-lg transition-colors text-neutral-400 hover:text-neutral-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="flex-1 overflow-hidden">
+                <iframe src="modulo-1-1.html" class="w-full h-full border-0"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal M1.2 -->
+    <div id="modal-m12" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/70 backdrop-blur-sm">
+        <div class="relative w-full max-w-5xl h-[90vh] mx-4 bg-dark-900 rounded-2xl border border-dark-700 overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between p-4 border-b border-dark-700">
+                <h3 class="text-lg font-bold text-neutral-100">M&oacute;dulo 1.2 &mdash; Estilos Arquiteturais</h3>
+                <button onclick="closeModal('modal-m12')" class="p-2 hover:bg-dark-700 rounded-lg transition-colors text-neutral-400 hover:text-neutral-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="flex-1 overflow-hidden">
+                <iframe src="modulo-1-2.html" class="w-full h-full border-0"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal M1.3 -->
+    <div id="modal-m13" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/70 backdrop-blur-sm">
+        <div class="relative w-full max-w-5xl h-[90vh] mx-4 bg-dark-900 rounded-2xl border border-dark-700 overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between p-4 border-b border-dark-700">
+                <h3 class="text-lg font-bold text-neutral-100">M&oacute;dulo 1.3 &mdash; Princ&iacute;pios de Design</h3>
+                <button onclick="closeModal('modal-m13')" class="p-2 hover:bg-dark-700 rounded-lg transition-colors text-neutral-400 hover:text-neutral-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="flex-1 overflow-hidden">
+                <iframe src="modulo-1-3.html" class="w-full h-full border-0"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal M1.4 -->
+    <div id="modal-m14" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/70 backdrop-blur-sm">
+        <div class="relative w-full max-w-5xl h-[90vh] mx-4 bg-dark-900 rounded-2xl border border-dark-700 overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between p-4 border-b border-dark-700">
+                <h3 class="text-lg font-bold text-neutral-100">M&oacute;dulo 1.4 &mdash; Qualidade e Atributos de Qualidade</h3>
+                <button onclick="closeModal('modal-m14')" class="p-2 hover:bg-dark-700 rounded-lg transition-colors text-neutral-400 hover:text-neutral-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="flex-1 overflow-hidden">
+                <iframe src="modulo-1-4.html" class="w-full h-full border-0"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal M1.5 -->
+    <div id="modal-m15" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/70 backdrop-blur-sm">
+        <div class="relative w-full max-w-5xl h-[90vh] mx-4 bg-dark-900 rounded-2xl border border-dark-700 overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between p-4 border-b border-dark-700">
+                <h3 class="text-lg font-bold text-neutral-100">M&oacute;dulo 1.5 &mdash; Comunica&ccedil;&atilde;o entre Sistemas</h3>
+                <button onclick="closeModal('modal-m15')" class="p-2 hover:bg-dark-700 rounded-lg transition-colors text-neutral-400 hover:text-neutral-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="flex-1 overflow-hidden">
+                <iframe src="modulo-1-5.html" class="w-full h-full border-0"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const isDark = document.documentElement.classList.contains('dark');
+            document.getElementById('theme-icon-dark').classList.toggle('hidden', !isDark);
+            document.getElementById('theme-icon-light').classList.toggle('hidden', isDark);
+        }
+
+        // Load saved theme
+        (function() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'light') {
+                document.documentElement.classList.remove('dark');
+            }
+            updateThemeIcon();
+        })();
+
+        // Toggle Topic
+        function toggleTopic(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('active');
+            }
+        }
+
+        // Modal
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // ESC key to close modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modals = document.querySelectorAll('[id^="modal-"]');
+                modals.forEach(function(modal) {
+                    if (!modal.classList.contains('hidden')) {
+                        closeModal(modal.id);
+                    }
+                });
+            }
+        });
+
+        // Close modal on backdrop click
+        document.querySelectorAll('[id^="modal-"]').forEach(function(modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal(modal.id);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
