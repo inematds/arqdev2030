@@ -2,10 +2,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T2 — Estratégias de Decisão | Arquitetura 2030</title>
+    <title>T2 - Estratégias de Decisão | Arquitetura DEV 2030</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -16,9 +17,6 @@
                             700: '#374151',
                             600: '#4b5563'
                         }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif']
                     }
                 }
             }
@@ -28,7 +26,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Light mode overrides */
+        body { font-family: 'Inter', sans-serif; }
+        .dark body { background-color: #111827; }
+        .topic-explanation { display: none; }
+        .topic-explanation.active { display: block; }
+
+        /* Base overrides (same for all) */
         html:not(.dark) body { background-color: #f8fafc; }
         html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
         html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
@@ -40,11 +43,16 @@
         html:not(.dark) .text-neutral-500 { color: #9ca3af; }
         html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
         html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+        /* Blue accent */
         html:not(.dark) .text-blue-400 { color: #2563eb; }
         html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
         html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
         html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
         html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+        html:not(.dark) .hover\:bg-dark-700\/50:hover { background-color: rgba(243, 244, 246, 0.5); }
+        html:not(.dark) .bg-dark-700\/50 { background-color: rgba(243, 244, 246, 0.5); }
+        html:not(.dark) .bg-dark-700\/30 { background-color: rgba(243, 244, 246, 0.3); }
         html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
         html:not(.dark) .text-primary { color: #a16207; }
         html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
@@ -54,27 +62,23 @@
         html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
         html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
         html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
-        html:not(.dark) .bg-dark-700\/50 { background-color: rgba(243, 244, 246, 0.5); }
-        html:not(.dark) .bg-dark-700\/30 { background-color: rgba(243, 244, 246, 0.3); }
-        html:not(.dark) .hover\:bg-dark-700\/50:hover { background-color: rgba(243, 244, 246, 0.5); }
-        html:not(.dark) .bg-blue-900\/30 { background-color: rgba(37, 99, 235, 0.06); }
     </style>
 </head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen font-sans">
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
 
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+    <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
+            <div class="flex items-center justify-between h-14">
                 <div class="flex items-center gap-3">
-                    <a href="../../index.html" class="text-yellow-400 font-bold text-lg hover:text-yellow-300 transition-colors">🏗️ Arquitetura 2030</a>
+                    <a href="../../index.html" class="text-yellow-400 font-bold text-lg hover:text-yellow-300 transition-colors">🏗️ Arquitetura DEV 2030</a>
                     <span class="text-neutral-500">|</span>
                     <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors">INEMA.CLUB</a>
                 </div>
                 <div class="flex items-center gap-1">
                     <a href="../trilha1/index.html" class="px-2 py-1 text-xs font-medium text-neutral-400 hover:bg-dark-700/50 rounded transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
-                    <a href="index.html" class="px-2 py-1 text-xs font-medium text-blue-400 bg-blue-500/20 rounded transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Decisão</span></a>
-                    <a href="../trilha3/index.html" class="px-2 py-1 text-xs font-medium text-neutral-400 hover:bg-dark-700/50 rounded transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">IA</span></a>
+                    <a href="index.html" class="px-2 py-1 text-xs font-medium text-blue-400 bg-blue-500/10 rounded transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Decisão</span></a>
+                    <a href="../trilha3/index.html" class="px-2 py-1 text-xs font-medium text-violet-400 hover:bg-violet-500/10 rounded transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">IA</span></a>
                     <a href="../trilha4/index.html" class="px-2 py-1 text-xs font-medium text-neutral-400 hover:bg-dark-700/50 rounded transition-colors"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Prática</span></a>
                     <a href="../trilha5/index.html" class="px-2 py-1 text-xs font-medium text-neutral-400 hover:bg-dark-700/50 rounded transition-colors"><span class="sm:hidden">T5</span><span class="hidden sm:inline">DevOps</span></a>
                     <a href="../trilha6/index.html" class="px-2 py-1 text-xs font-medium text-neutral-400 hover:bg-dark-700/50 rounded transition-colors"><span class="sm:hidden">T6</span><span class="hidden sm:inline">Escalando</span></a>
@@ -117,17 +121,55 @@
         </div>
     </section>
 
-    <!-- Modules -->
+    <!-- Navegação Rápida -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
+        <h2 class="text-2xl font-bold text-neutral-100 mb-6">Navegação Rápida</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <a href="#modulo-2-1" class="bg-dark-800 border border-blue-500/30 rounded-xl p-5 hover:border-blue-400 transition-colors group">
+                <div class="text-sm font-bold text-blue-400 mb-1">Módulo 2.1</div>
+                <div class="text-neutral-100 font-semibold mb-1">Framework de Decisão Arquitetural</div>
+                <div class="text-neutral-400 text-sm">Como escolher a arquitetura certa para cada contexto</div>
+            </a>
+            <a href="#modulo-2-2" class="bg-dark-800 border border-blue-500/30 rounded-xl p-5 hover:border-blue-400 transition-colors group">
+                <div class="text-sm font-bold text-blue-400 mb-1">Módulo 2.2</div>
+                <div class="text-neutral-100 font-semibold mb-1">Análise de Trade-offs</div>
+                <div class="text-neutral-400 text-sm">Toda decisão é uma troca — aprenda a fazer as certas</div>
+            </a>
+            <a href="#modulo-2-3" class="bg-dark-800 border border-blue-500/30 rounded-xl p-5 hover:border-blue-400 transition-colors group">
+                <div class="text-sm font-bold text-blue-400 mb-1">Módulo 2.3</div>
+                <div class="text-neutral-100 font-semibold mb-1">Escolhendo a Stack Certa</div>
+                <div class="text-neutral-400 text-sm">Tecnologia é meio, não fim — como escolher sem cair no hype</div>
+            </a>
+            <a href="#modulo-2-4" class="bg-dark-800 border border-blue-500/30 rounded-xl p-5 hover:border-blue-400 transition-colors group">
+                <div class="text-sm font-bold text-blue-400 mb-1">Módulo 2.4</div>
+                <div class="text-neutral-100 font-semibold mb-1">ADRs e Documentação de Decisão</div>
+                <div class="text-neutral-400 text-sm">Architecture Decision Records — a memória do projeto</div>
+            </a>
+            <a href="#modulo-2-5" class="bg-dark-800 border border-blue-500/30 rounded-xl p-5 hover:border-blue-400 transition-colors group">
+                <div class="text-sm font-bold text-blue-400 mb-1">Módulo 2.5</div>
+                <div class="text-neutral-100 font-semibold mb-1">Migração e Evolução</div>
+                <div class="text-neutral-400 text-sm">Sistemas vivos mudam — aprenda a evoluir sem quebrar</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <hr class="border-dark-700">
+    </div>
+
+    <!-- Conteúdo Detalhado -->
     <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
+        <h2 class="text-2xl font-bold text-neutral-100 mb-2">Conteúdo Detalhado</h2>
 
         <!-- M2.1 -->
-        <div class="bg-dark-800 border border-blue-500/30 rounded-2xl overflow-hidden">
+        <div id="modulo-2-1" class="bg-dark-800 border border-blue-500/30 rounded-2xl overflow-hidden">
             <div class="p-6 sm:p-8">
                 <div class="flex items-center gap-3 mb-1">
                     <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Módulo 2.1</span>
                     <span class="text-xs text-neutral-500">~35 min</span>
                 </div>
-                <h2 class="text-xl sm:text-2xl font-bold text-neutral-100 mb-1">🧭 Framework de Decisão Arquitetural</h2>
+                <h2 class="text-2xl font-bold text-neutral-100 mb-1">🧭 Framework de Decisão Arquitetural</h2>
                 <p class="text-neutral-400 text-sm mb-6">Como escolher a arquitetura certa para cada contexto</p>
 
                 <div class="space-y-3">
@@ -138,7 +180,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">1</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🎯 Custo Dominante — "Qual é o risco principal: velocidade, escala, organização ou imprevisibilidade?"</span>
                         </button>
-                        <div id="m21t1" class="hidden px-4 pb-4">
+                        <div id="m21t1" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -162,7 +204,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">2</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🏃 Velocidade como Prioridade — "Aprender rápido com o mínimo de estrutura"</span>
                         </button>
-                        <div id="m21t2" class="hidden px-4 pb-4">
+                        <div id="m21t2" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -186,7 +228,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">3</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">📈 Crescimento como Prioridade — "Preservar opções para escalar"</span>
                         </button>
-                        <div id="m21t3" class="hidden px-4 pb-4">
+                        <div id="m21t3" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -210,7 +252,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">4</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🏢 Organização como Prioridade — "Autonomia de times com alinhamento técnico"</span>
                         </button>
-                        <div id="m21t4" class="hidden px-4 pb-4">
+                        <div id="m21t4" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -234,7 +276,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">5</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🌊 Imprevisibilidade como Prioridade — "Escalar o evento, não o servidor"</span>
                         </button>
-                        <div id="m21t5" class="hidden px-4 pb-4">
+                        <div id="m21t5" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -258,7 +300,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">6</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🤖 Não-Determinismo como Prioridade — "Controlar IA em produção"</span>
                         </button>
-                        <div id="m21t6" class="hidden px-4 pb-4">
+                        <div id="m21t6" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -282,7 +324,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">7</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🔄 Combinando Prioridades — "Na prática, todo projeto tem múltiplos riscos"</span>
                         </button>
-                        <div id="m21t7" class="hidden px-4 pb-4">
+                        <div id="m21t7" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -301,17 +343,22 @@
                     </div>
 
                 </div>
+
+                <div class="flex gap-3 mt-6 justify-start">
+                    <button onclick="openModal('Módulo 2.1 — Framework de Decisão Arquitetural', 'modulo-2-1.html')" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">Ver em Modal</button>
+                    <a href="modulo-2-1.html" class="bg-dark-700 hover:bg-dark-600 text-neutral-300 text-sm font-medium px-4 py-2 rounded-lg transition-colors">Ver Completo</a>
+                </div>
             </div>
         </div>
 
         <!-- M2.2 -->
-        <div class="bg-dark-800 border border-blue-500/30 rounded-2xl overflow-hidden">
+        <div id="modulo-2-2" class="bg-dark-800 border border-blue-500/30 rounded-2xl overflow-hidden">
             <div class="p-6 sm:p-8">
                 <div class="flex items-center gap-3 mb-1">
                     <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Módulo 2.2</span>
                     <span class="text-xs text-neutral-500">~35 min</span>
                 </div>
-                <h2 class="text-xl sm:text-2xl font-bold text-neutral-100 mb-1">📊 Análise de Trade-offs</h2>
+                <h2 class="text-2xl font-bold text-neutral-100 mb-1">📊 Análise de Trade-offs</h2>
                 <p class="text-neutral-400 text-sm mb-6">Toda decisão é uma troca — aprenda a fazer as certas</p>
 
                 <div class="space-y-3">
@@ -322,7 +369,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">1</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">⚖️ O que são Trade-offs — "Não existe almoço grátis em arquitetura"</span>
                         </button>
-                        <div id="m22t1" class="hidden px-4 pb-4">
+                        <div id="m22t1" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -346,7 +393,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">2</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">💰 Custo vs. Performance — "Quanto vale cada milissegundo?"</span>
                         </button>
-                        <div id="m22t2" class="hidden px-4 pb-4">
+                        <div id="m22t2" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -370,7 +417,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">3</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🏎️ Velocidade de Entrega vs. Qualidade — "Ship fast vs. ship right"</span>
                         </button>
-                        <div id="m22t3" class="hidden px-4 pb-4">
+                        <div id="m22t3" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -394,7 +441,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">4</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🔐 Segurança vs. Usabilidade — "Quanto atrito é aceitável?"</span>
                         </button>
-                        <div id="m22t4" class="hidden px-4 pb-4">
+                        <div id="m22t4" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -418,7 +465,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">5</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🧩 Flexibilidade vs. Complexidade — "Quanto futuro você precisa suportar?"</span>
                         </button>
-                        <div id="m22t5" class="hidden px-4 pb-4">
+                        <div id="m22t5" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -442,7 +489,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">6</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🌐 Consistência vs. Disponibilidade — "CAP na vida real"</span>
                         </button>
-                        <div id="m22t6" class="hidden px-4 pb-4">
+                        <div id="m22t6" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -466,7 +513,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">7</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">📐 Análise de Trade-offs na Prática — "Um framework para decisões difíceis"</span>
                         </button>
-                        <div id="m22t7" class="hidden px-4 pb-4">
+                        <div id="m22t7" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -485,17 +532,22 @@
                     </div>
 
                 </div>
+
+                <div class="flex gap-3 mt-6 justify-start">
+                    <button onclick="openModal('Módulo 2.2 — Análise de Trade-offs', 'modulo-2-2.html')" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">Ver em Modal</button>
+                    <a href="modulo-2-2.html" class="bg-dark-700 hover:bg-dark-600 text-neutral-300 text-sm font-medium px-4 py-2 rounded-lg transition-colors">Ver Completo</a>
+                </div>
             </div>
         </div>
 
         <!-- M2.3 -->
-        <div class="bg-dark-800 border border-blue-500/30 rounded-2xl overflow-hidden">
+        <div id="modulo-2-3" class="bg-dark-800 border border-blue-500/30 rounded-2xl overflow-hidden">
             <div class="p-6 sm:p-8">
                 <div class="flex items-center gap-3 mb-1">
                     <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Módulo 2.3</span>
                     <span class="text-xs text-neutral-500">~35 min</span>
                 </div>
-                <h2 class="text-xl sm:text-2xl font-bold text-neutral-100 mb-1">🛠️ Escolhendo a Stack Certa</h2>
+                <h2 class="text-2xl font-bold text-neutral-100 mb-1">🛠️ Escolhendo a Stack Certa</h2>
                 <p class="text-neutral-400 text-sm mb-6">Tecnologia é meio, não fim — como escolher sem cair no hype</p>
 
                 <div class="space-y-3">
@@ -506,7 +558,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">1</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🎪 Hype vs. Sustentabilidade — "O ciclo de vida de toda tecnologia"</span>
                         </button>
-                        <div id="m23t1" class="hidden px-4 pb-4">
+                        <div id="m23t1" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -530,7 +582,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">2</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">👥 Fit com o Time — "A melhor tecnologia é a que seu time domina"</span>
                         </button>
-                        <div id="m23t2" class="hidden px-4 pb-4">
+                        <div id="m23t2" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -554,7 +606,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">3</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🔗 Ecossistema e Comunidade — "Bibliotecas, plugins, respostas no Stack Overflow"</span>
                         </button>
-                        <div id="m23t3" class="hidden px-4 pb-4">
+                        <div id="m23t3" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -578,7 +630,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">4</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">💸 Total Cost of Ownership — "O custo real vai além da licença"</span>
                         </button>
-                        <div id="m23t4" class="hidden px-4 pb-4">
+                        <div id="m23t4" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -602,7 +654,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">5</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🏗️ Stack para o Contexto INEMA — "n8n + Claude Code + Supabase + HTML estático"</span>
                         </button>
-                        <div id="m23t5" class="hidden px-4 pb-4">
+                        <div id="m23t5" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -626,7 +678,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">6</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🔄 Estratégias de Migração — "Trocar o motor com o avião voando"</span>
                         </button>
-                        <div id="m23t6" class="hidden px-4 pb-4">
+                        <div id="m23t6" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -650,7 +702,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">7</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">📋 Checklist de Decisão de Stack — "10 perguntas antes de escolher"</span>
                         </button>
-                        <div id="m23t7" class="hidden px-4 pb-4">
+                        <div id="m23t7" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -669,17 +721,22 @@
                     </div>
 
                 </div>
+
+                <div class="flex gap-3 mt-6 justify-start">
+                    <button onclick="openModal('Módulo 2.3 — Escolhendo a Stack Certa', 'modulo-2-3.html')" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">Ver em Modal</button>
+                    <a href="modulo-2-3.html" class="bg-dark-700 hover:bg-dark-600 text-neutral-300 text-sm font-medium px-4 py-2 rounded-lg transition-colors">Ver Completo</a>
+                </div>
             </div>
         </div>
 
         <!-- M2.4 -->
-        <div class="bg-dark-800 border border-blue-500/30 rounded-2xl overflow-hidden">
+        <div id="modulo-2-4" class="bg-dark-800 border border-blue-500/30 rounded-2xl overflow-hidden">
             <div class="p-6 sm:p-8">
                 <div class="flex items-center gap-3 mb-1">
                     <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Módulo 2.4</span>
                     <span class="text-xs text-neutral-500">~30 min</span>
                 </div>
-                <h2 class="text-xl sm:text-2xl font-bold text-neutral-100 mb-1">📝 ADRs e Documentação de Decisão</h2>
+                <h2 class="text-2xl font-bold text-neutral-100 mb-1">📝 ADRs e Documentação de Decisão</h2>
                 <p class="text-neutral-400 text-sm mb-6">Architecture Decision Records — a memória do projeto</p>
 
                 <div class="space-y-3">
@@ -690,7 +747,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">1</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">📄 O que são ADRs — "Decisões como código: versionadas, revisáveis, rastreáveis"</span>
                         </button>
-                        <div id="m24t1" class="hidden px-4 pb-4">
+                        <div id="m24t1" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -714,7 +771,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">2</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">✍️ Como Escrever um Bom ADR — "Contexto, decisão, consequências — nessa ordem"</span>
                         </button>
-                        <div id="m24t2" class="hidden px-4 pb-4">
+                        <div id="m24t2" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -738,7 +795,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">3</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🔍 Quando Criar um ADR — "Não documente tudo, documente o que importa"</span>
                         </button>
-                        <div id="m24t3" class="hidden px-4 pb-4">
+                        <div id="m24t3" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -762,7 +819,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">4</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">📂 Organizando ADRs no Repositório — "docs/decisions/0001-use-postgresql.md"</span>
                         </button>
-                        <div id="m24t4" class="hidden px-4 pb-4">
+                        <div id="m24t4" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -786,7 +843,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">5</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🔄 Lifecycle de um ADR — "Proposed → Accepted → Superseded"</span>
                         </button>
-                        <div id="m24t5" class="hidden px-4 pb-4">
+                        <div id="m24t5" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -810,7 +867,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">6</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🗣️ ADRs como Ferramenta de Comunicação — "Alinhamento assíncrono para times distribuídos"</span>
                         </button>
-                        <div id="m24t6" class="hidden px-4 pb-4">
+                        <div id="m24t6" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -834,7 +891,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">7</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">📊 Métricas e Revisão de ADRs — "Revisitando decisões com dados"</span>
                         </button>
-                        <div id="m24t7" class="hidden px-4 pb-4">
+                        <div id="m24t7" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -853,17 +910,22 @@
                     </div>
 
                 </div>
+
+                <div class="flex gap-3 mt-6 justify-start">
+                    <button onclick="openModal('Módulo 2.4 — ADRs e Documentação de Decisão', 'modulo-2-4.html')" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">Ver em Modal</button>
+                    <a href="modulo-2-4.html" class="bg-dark-700 hover:bg-dark-600 text-neutral-300 text-sm font-medium px-4 py-2 rounded-lg transition-colors">Ver Completo</a>
+                </div>
             </div>
         </div>
 
         <!-- M2.5 -->
-        <div class="bg-dark-800 border border-blue-500/30 rounded-2xl overflow-hidden">
+        <div id="modulo-2-5" class="bg-dark-800 border border-blue-500/30 rounded-2xl overflow-hidden">
             <div class="p-6 sm:p-8">
                 <div class="flex items-center gap-3 mb-1">
                     <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Módulo 2.5</span>
                     <span class="text-xs text-neutral-500">~35 min</span>
                 </div>
-                <h2 class="text-xl sm:text-2xl font-bold text-neutral-100 mb-1">🔄 Migração e Evolução</h2>
+                <h2 class="text-2xl font-bold text-neutral-100 mb-1">🔄 Migração e Evolução</h2>
                 <p class="text-neutral-400 text-sm mb-6">Sistemas vivos mudam — aprenda a evoluir sem quebrar</p>
 
                 <div class="space-y-3">
@@ -874,7 +936,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">1</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🌿 Strangler Fig Pattern — "A migração mais segura que existe"</span>
                         </button>
-                        <div id="m25t1" class="hidden px-4 pb-4">
+                        <div id="m25t1" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -898,7 +960,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">2</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🔀 Branch by Abstraction — "Mudar implementação sem mudar interface"</span>
                         </button>
-                        <div id="m25t2" class="hidden px-4 pb-4">
+                        <div id="m25t2" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -922,7 +984,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">3</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🐦 Canary Releases — "Testar em produção com rede de segurança"</span>
                         </button>
-                        <div id="m25t3" class="hidden px-4 pb-4">
+                        <div id="m25t3" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -946,7 +1008,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">4</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🏗️ Database Migration Strategies — "O problema mais difícil de migração"</span>
                         </button>
-                        <div id="m25t4" class="hidden px-4 pb-4">
+                        <div id="m25t4" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -970,7 +1032,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">5</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🚩 Feature Flags — "O botão de liga/desliga em produção"</span>
                         </button>
-                        <div id="m25t5" class="hidden px-4 pb-4">
+                        <div id="m25t5" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -994,7 +1056,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">6</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">📐 Architecture Fitness Functions — "Testes automatizados para sua arquitetura"</span>
                         </button>
-                        <div id="m25t6" class="hidden px-4 pb-4">
+                        <div id="m25t6" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -1018,7 +1080,7 @@
                             <span class="w-7 h-7 min-w-[1.75rem] rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center border border-blue-500/30">7</span>
                             <span class="text-sm font-semibold text-neutral-100 text-left">🔮 Evolutionary Architecture — "Projetada para mudar"</span>
                         </button>
-                        <div id="m25t7" class="hidden px-4 pb-4">
+                        <div id="m25t7" class="topic-explanation px-4 pb-4">
                             <div class="bg-blue-900/30 rounded-lg p-4 space-y-3 text-sm">
                                 <div>
                                     <span class="text-blue-400 font-semibold">O que é:</span>
@@ -1036,6 +1098,11 @@
                         </div>
                     </div>
 
+                </div>
+
+                <div class="flex gap-3 mt-6 justify-start">
+                    <button onclick="openModal('Módulo 2.5 — Migração e Evolução', 'modulo-2-5.html')" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">Ver em Modal</button>
+                    <a href="modulo-2-5.html" class="bg-dark-700 hover:bg-dark-600 text-neutral-300 text-sm font-medium px-4 py-2 rounded-lg transition-colors">Ver Completo</a>
                 </div>
             </div>
         </div>
@@ -1057,7 +1124,7 @@
     <!-- Footer -->
     <footer class="border-t border-dark-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <p class="text-center text-neutral-500 text-sm">Arquitetura 2030 — 2026</p>
+            <p class="text-center text-neutral-500 text-sm">Arquitetura DEV 2030 — 2026</p>
         </div>
     </footer>
 
@@ -1103,7 +1170,7 @@
         function toggleTopic(id) {
             const el = document.getElementById(id);
             if (el) {
-                el.classList.toggle('hidden');
+                el.classList.toggle('active');
             }
         }
 
